@@ -7,1422 +7,1926 @@
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>
+/* ============================
+   DESIGN TOKENS
+   ============================ */
 :root {
-  --b900: #0a1f2e; --b800: #0d2f45; --b700: #0f3d5a;
-  --b600: #135070; --b500: #1a6b8a; --b400: #2188ad;
-  --b300: #3aa8cc; --b200: #7ccde0; --b100: #b8e4f0;
-  --b050: #dff3f9; --b010: #f0fafd; --white: #f8feff;
-  --success: #1e8a5e; --warning: #b86a00; --danger: #b83030;
-  --radius: 16px; --radius-sm: 10px; --radius-xs: 6px;
-  --shadow: 0 4px 24px rgba(10,31,46,.18);
-  --shadow-sm: 0 2px 8px rgba(10,31,46,.10);
+  --b900:#0a1f2e; --b800:#0d2f45; --b700:#0f3d5a;
+  --b600:#135070; --b500:#1a6b8a; --b400:#2188ad;
+  --b300:#3aa8cc; --b200:#7ccde0; --b100:#b8e4f0;
+  --b050:#dff3f9; --b010:#f0fafd; --white:#f8feff;
+  --ok:#1e8a5e; --warn:#b86a00; --danger:#b83030;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Tajawal',sans-serif;direction:rtl;background:#e8f4f8;min-height:100vh;overflow-x:hidden;}
 
-/* ========== LAYOUT ========== */
-.page-header{background:var(--b900);color:#fff;padding:18px 32px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.3);}
-.page-header h1{font-size:1.4rem;font-weight:700;flex:1;}
-.page-header .subtitle{font-size:.85rem;color:var(--b200);opacity:.8;}
-.main-layout{display:flex;gap:24px;padding:24px 32px;align-items:flex-start;max-width:1400px;margin:0 auto;}
-.side-panel{width:260px;flex-shrink:0;display:flex;flex-direction:column;gap:16px;position:sticky;top:24px;}
-.phone-area{flex:1;display:flex;justify-content:center;}
-.showcase-section{padding:24px 32px 48px;max-width:1400px;margin:0 auto;}
-.showcase-title{font-size:1.2rem;font-weight:700;color:var(--b800);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
-.showcase-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px;}
+/* ============================
+   RESET & BASE
+   ============================ */
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Tajawal',sans-serif;
+  direction:rtl;
+  background:linear-gradient(160deg,#c8eaf5 0%,#dff3f9 50%,#c0e4f0 100%);
+  min-height:100vh;
+  overflow-x:hidden;
+}
 
-/* ========== SIDE PANEL CARDS ========== */
-.panel-card{background:#fff;border-radius:var(--radius);padding:16px;box-shadow:var(--shadow-sm);}
-.panel-card h3{font-size:.85rem;font-weight:700;color:var(--b700);margin-bottom:12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--b050);padding-bottom:8px;}
-.nav-btn{display:flex;align-items:center;gap:8px;width:100%;text-align:right;padding:7px 10px;border:none;background:none;border-radius:var(--radius-xs);cursor:pointer;font-family:'Tajawal',sans-serif;font-size:.82rem;color:var(--b800);transition:all .15s;}
-.nav-btn:hover{background:var(--b050);color:var(--b600);}
-.nav-btn.active{background:var(--b700);color:#fff;}
-.nav-btn .dot{width:6px;height:6px;border-radius:50%;background:var(--b300);flex-shrink:0;}
-.nav-btn.active .dot{background:#fff;}
-.icon-control-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f4f6;}
-.icon-control-row:last-child{border-bottom:none;}
-.icon-control-label{font-size:.78rem;color:var(--b700);}
-.icon-edit-btn{display:flex;align-items:center;gap:4px;padding:4px 8px;border:1px solid var(--b100);border-radius:20px;background:var(--b010);cursor:pointer;font-size:.75rem;color:var(--b600);transition:all .15s;}
-.icon-edit-btn:hover{background:var(--b050);border-color:var(--b300);}
-.tip-box{background:var(--b050);border:1px solid var(--b100);border-radius:var(--radius-xs);padding:10px 12px;font-size:.78rem;color:var(--b600);display:flex;gap:6px;align-items:flex-start;}
+/* ============================
+   TOP BAR (frosted glass)
+   ============================ */
+.top-bar{
+  background:rgba(10,31,46,.82);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  padding:13px 32px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:100;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.top-bar-logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:#fff;
+  flex:1;
+}
+.top-bar-logo i{color:var(--b200);width:22px;height:22px;}
+.top-bar-logo span{font-size:1.1rem;font-weight:700;letter-spacing:.01em;}
+.top-bar-logo small{font-size:.75rem;color:var(--b200);opacity:.7;margin-right:4px;}
+.showcase-toggle-btn{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:8px 16px;
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:20px;
+  color:#fff;
+  font-family:'Tajawal',sans-serif;
+  font-size:.82rem;
+  cursor:pointer;
+  transition:all .2s;
+}
+.showcase-toggle-btn:hover{background:rgba(255,255,255,.18);}
+.showcase-toggle-btn i{width:15px;height:15px;}
 
-/* ========== PHONE SHELL ========== */
-.phone-shell{width:375px;height:760px;background:var(--b900);border-radius:44px;padding:12px;box-shadow:0 20px 60px rgba(10,31,46,.45),0 0 0 1px rgba(255,255,255,.08);position:relative;flex-shrink:0;}
-.phone-screen{width:100%;height:100%;background:var(--b010);border-radius:34px;overflow:hidden;position:relative;}
-.phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:100px;height:28px;background:var(--b900);border-radius:0 0 18px 18px;z-index:100;}
+/* ============================
+   HERO AREA
+   ============================ */
+.hero-area{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:48px 24px 40px;
+  gap:28px;
+}
+.phone-row{
+  display:flex;
+  align-items:center;
+  gap:32px;
+}
+.arrow-btn{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:rgba(255,255,255,.55);
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.7);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:all .2s;
+  color:var(--b700);
+  flex-shrink:0;
+  box-shadow:0 4px 16px rgba(10,31,46,.12);
+}
+.arrow-btn:hover{background:rgba(255,255,255,.85);transform:scale(1.07);}
+.arrow-btn:active{transform:scale(.96);}
+.arrow-btn i{width:20px;height:20px;}
 
-/* ========== APP SCREENS ========== */
-.screen{display:none;flex-direction:column;height:100%;background:var(--b010);overflow:hidden;}
-.screen.active{display:flex;}
+/* ============================
+   PHONE SHELL
+   ============================ */
+.phone-shell{
+  width:375px;
+  background:var(--b900);
+  border-radius:44px;
+  padding:12px;
+  box-shadow:0 40px 80px rgba(10,31,46,.5),0 0 0 1px rgba(255,255,255,.1);
+  position:relative;
+  flex-shrink:0;
+}
+.phone-notch{
+  width:120px;height:24px;
+  background:var(--b900);
+  border-radius:0 0 16px 16px;
+  position:absolute;
+  top:0;left:50%;transform:translateX(-50%);
+  z-index:10;
+}
+.phone-screen{
+  width:100%;
+  height:680px;
+  border-radius:34px;
+  overflow:hidden;
+  position:relative;
+  background:var(--b010);
+}
 
-/* Status bar */
-.status-bar{background:var(--b900);color:#fff;padding:28px 16px 8px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
-.status-time{font-size:.75rem;font-weight:600;}
-.status-icons{display:flex;gap:4px;align-items:center;}
-.status-icons i{width:14px;height:14px;}
+/* ============================
+   SCREEN TRANSITIONS
+   ============================ */
+.screen{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  transform:translateX(30px);
+  pointer-events:none;
+  transition:opacity .25s ease,transform .25s ease;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+.screen.active{
+  opacity:1;
+  transform:translateX(0);
+  pointer-events:auto;
+}
+.screen.exit{
+  opacity:0;
+  transform:translateX(-30px);
+}
 
-/* App header */
-.app-header{background:var(--b800);padding:12px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.2);}
-.app-header .back-btn{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.12);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s;}
-.app-header .back-btn:hover{background:rgba(255,255,255,.22);}
-.app-header .back-btn i{width:16px;height:16px;}
-.app-header h2{flex:1;font-size:1rem;font-weight:700;color:#fff;}
-.app-header .header-action{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.12);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;}
-.app-header .header-action:hover{background:rgba(255,255,255,.22);}
-.app-header .header-action i{width:16px;height:16px;}
+/* ============================
+   SCREEN PILL + DOTS
+   ============================ */
+.screen-meta{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+}
+.screen-pill{
+  background:rgba(10,31,46,.75);
+  color:#fff;
+  padding:6px 20px;
+  border-radius:20px;
+  font-size:.82rem;
+  font-weight:500;
+  backdrop-filter:blur(8px);
+  letter-spacing:.02em;
+}
+.dots-row{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.dot-btn{
+  width:8px;height:8px;
+  border-radius:50%;
+  background:rgba(255,255,255,.4);
+  transition:all .2s;
+  cursor:pointer;
+  border:none;
+  padding:0;
+}
+.dot-btn.active{
+  width:22px;
+  border-radius:4px;
+  background:var(--b500);
+}
+.edit-hint{
+  font-size:.75rem;
+  color:var(--b700);
+  display:flex;
+  align-items:center;
+  gap:5px;
+  opacity:.7;
+}
+.edit-hint i{width:12px;height:12px;}
 
-/* Screen content */
-.screen-body{flex:1;overflow-y:auto;padding:16px;}
-.screen-body::-webkit-scrollbar{width:3px;}
-.screen-body::-webkit-scrollbar-track{background:transparent;}
-.screen-body::-webkit-scrollbar-thumb{background:var(--b200);border-radius:2px;}
+/* ============================
+   PHONE SCREEN INTERNALS
+   ============================ */
 
-/* ========== S1: Lakes List ========== */
-.hero-banner{background:linear-gradient(135deg,var(--b700),var(--b500));border-radius:var(--radius);padding:16px;margin-bottom:16px;color:#fff;position:relative;overflow:hidden;}
-.hero-banner::before{content:'';position:absolute;top:-20px;left:-20px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.06);}
-.hero-banner::after{content:'';position:absolute;bottom:-30px;right:-10px;width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,.05);}
-.hero-banner h3{font-size:1rem;font-weight:700;margin-bottom:4px;position:relative;z-index:1;}
-.hero-banner p{font-size:.78rem;opacity:.8;position:relative;z-index:1;}
-.hero-stats{display:flex;gap:12px;margin-top:10px;position:relative;z-index:1;}
-.hero-stat{text-align:center;}
-.hero-stat .val{font-size:1rem;font-weight:900;display:block;}
-.hero-stat .lbl{font-size:.65rem;opacity:.75;}
+/* Status Bar */
+.status-bar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:8px 18px 4px;
+  font-size:.7rem;
+  font-weight:700;
+  flex-shrink:0;
+  color:#fff;
+  background:transparent;
+  position:relative;
+  z-index:5;
+}
+.status-bar.dark{color:var(--b800);}
+.status-icons{display:flex;align-items:center;gap:5px;}
+.status-icons i{width:13px;height:13px;}
 
-.section-label{font-size:.78rem;font-weight:700;color:var(--b600);margin-bottom:8px;padding-right:4px;}
-.lake-card{background:#fff;border-radius:var(--radius);padding:14px;margin-bottom:10px;box-shadow:var(--shadow-sm);cursor:pointer;transition:all .18s;border:1.5px solid transparent;display:flex;align-items:center;gap:12px;}
-.lake-card:hover{border-color:var(--b300);transform:translateY(-1px);box-shadow:var(--shadow);}
-.lake-icon-wrap{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--b700),var(--b500));display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;cursor:pointer;}
-.lake-icon-wrap i,.lake-icon-wrap .emoji-icon{color:#fff;width:22px;height:22px;font-size:22px;line-height:1;}
-.edit-badge{position:absolute;bottom:-4px;left:-4px;width:16px;height:16px;background:var(--b300);border-radius:50%;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff;}
-.edit-badge i{width:8px;height:8px;color:#fff;}
-.lake-info{flex:1;min-width:0;}
-.lake-name{font-size:.9rem;font-weight:700;color:var(--b900);margin-bottom:3px;}
-.lake-meta{font-size:.72rem;color:#888;}
-.lake-chips{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;}
-.chip{padding:2px 8px;border-radius:20px;font-size:.68rem;font-weight:600;}
-.chip-exp{background:#fff0f0;color:var(--danger);}
-.chip-sale{background:#f0fff6;color:var(--success);}
-.lake-arrow{color:var(--b300);}
-.lake-arrow i{width:16px;height:16px;}
+/* App Bar */
+.app-bar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 16px 10px;
+  flex-shrink:0;
+}
+.app-bar.blue{background:linear-gradient(135deg,var(--b800),var(--b600));}
+.app-bar-title{font-size:.95rem;font-weight:700;color:#fff;flex:1;text-align:center;}
+.app-bar-btn{
+  width:34px;height:34px;
+  border-radius:50%;
+  background:rgba(255,255,255,.12);
+  border:none;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  color:#fff;
+}
+.app-bar-btn i{width:16px;height:16px;}
 
-.add-lake-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;border:2px dashed var(--b200);border-radius:var(--radius);background:transparent;color:var(--b500);font-family:'Tajawal',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .15s;}
-.add-lake-btn:hover{background:var(--b050);border-color:var(--b400);}
-.add-lake-btn i{width:18px;height:18px;}
+/* Screen Scroll Area */
+.screen-scroll{flex:1;overflow-y:auto;padding:0 0 16px;}
+.screen-scroll::-webkit-scrollbar{width:3px;}
+.screen-scroll::-webkit-scrollbar-thumb{background:var(--b200);border-radius:2px;}
 
-/* ========== S2: Lake Dashboard ========== */
-.lake-summary{background:linear-gradient(135deg,var(--b800),var(--b600));padding:14px 16px;margin-bottom:0;color:#fff;}
-.lake-summary .lake-title{font-size:1.1rem;font-weight:900;margin-bottom:10px;display:flex;align-items:center;gap:10px;}
-.lake-summary .lake-title .icon-wrap{width:38px;height:38px;border-radius:12px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:all .15s;}
-.lake-summary .lake-title .icon-wrap:hover{background:rgba(255,255,255,.25);}
-.lake-summary .lake-title .icon-wrap i,.lake-summary .lake-title .icon-wrap .emoji-icon{width:20px;height:20px;color:#fff;font-size:20px;line-height:1;}
-.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.summary-box{background:rgba(255,255,255,.1);border-radius:var(--radius-sm);padding:10px 12px;border:1px solid rgba(255,255,255,.08);}
-.summary-box .s-label{font-size:.68rem;opacity:.75;margin-bottom:2px;}
-.summary-box .s-val{font-size:.95rem;font-weight:700;}
-.summary-box .s-count{font-size:.68rem;opacity:.7;margin-top:2px;}
+/* ============================
+   S1: LAKES LIST
+   ============================ */
+#screen-lakes-list{background:var(--b010);}
+.s1-header{
+  background:linear-gradient(160deg,var(--b800),var(--b700));
+  padding:0 0 16px;
+  flex-shrink:0;
+}
+.s1-app-bar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 16px;
+}
+.s1-app-bar-icon{
+  width:34px;height:34px;
+  border-radius:50%;
+  background:rgba(255,255,255,.12);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--b200);
+}
+.s1-app-bar-icon i{width:18px;height:18px;}
+.s1-app-bar-title{font-size:.98rem;font-weight:700;color:#fff;flex:1;}
+.s1-hero{
+  margin:0 14px 0;
+  background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.05));
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:18px;
+  padding:14px 16px;
+  display:flex;
+  justify-content:space-around;
+}
+.s1-stat{text-align:center;}
+.s1-stat-val{font-size:1rem;font-weight:700;color:#fff;}
+.s1-stat-lbl{font-size:.68rem;color:var(--b200);margin-top:1px;}
+.s1-stat-sep{width:1px;background:rgba(255,255,255,.15);}
 
-.section-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px;}
-.sec-btn{background:#fff;border-radius:var(--radius);padding:14px 12px;border:none;cursor:pointer;text-align:center;box-shadow:var(--shadow-sm);transition:all .18s;border:1.5px solid transparent;display:flex;flex-direction:column;align-items:center;gap:8px;}
-.sec-btn:hover{border-color:var(--b300);transform:translateY(-2px);box-shadow:var(--shadow);}
-.sec-icon{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;position:relative;margin:0 auto 2px;}
-.sec-icon.expenses{background:linear-gradient(135deg,#fce4e4,#f8c8c8);}
-.sec-icon.expenses i,.sec-icon.expenses .emoji-icon{color:var(--danger);}
-.sec-icon.sales{background:linear-gradient(135deg,#e4f8ee,#c8f0d8);}
-.sec-icon.sales i,.sec-icon.sales .emoji-icon{color:var(--success);}
-.sec-icon.creditor{background:linear-gradient(135deg,#e4f0ff,#c8dfff);}
-.sec-icon.creditor i,.sec-icon.creditor .emoji-icon{color:#1a5fa8;}
-.sec-icon.debtor{background:linear-gradient(135deg,#fff5e4,#ffe8c0);}
-.sec-icon.debtor i,.sec-icon.debtor .emoji-icon{color:var(--warning);}
-.sec-icon i,.sec-icon .emoji-icon{width:22px;height:22px;font-size:22px;line-height:1;}
-.sec-title{font-size:.82rem;font-weight:700;color:var(--b800);}
-.sec-amount{font-size:.88rem;font-weight:900;color:var(--b700);}
-.sec-count{font-size:.68rem;color:#888;margin-top:2px;}
+.lake-card{
+  margin:10px 14px 0;
+  background:#fff;
+  border-radius:16px;
+  padding:12px 14px;
+  box-shadow:0 2px 12px rgba(10,31,46,.08);
+  cursor:pointer;
+  transition:transform .15s,box-shadow .15s;
+}
+.lake-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(10,31,46,.14);}
+.lake-card-top{display:flex;align-items:center;gap:10px;}
+.lake-icon-wrap{
+  position:relative;
+  width:42px;height:42px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--b500),var(--b400));
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;
+  font-size:1.2rem;
+  flex-shrink:0;
+  cursor:pointer;
+}
+.lake-icon-wrap i{width:20px;height:20px;}
+.edit-badge{
+  position:absolute;
+  bottom:-3px;left:-3px;
+  width:15px;height:15px;
+  background:var(--b200);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid #fff;
+  cursor:pointer;
+}
+.edit-badge i{width:7px;height:7px;color:var(--b800);}
+.lake-card-info{flex:1;}
+.lake-card-name{font-size:.88rem;font-weight:700;color:var(--b800);}
+.lake-card-date{font-size:.72rem;color:#888;margin-top:1px;}
+.lake-card-chips{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap;}
+.chip{
+  padding:3px 8px;
+  border-radius:20px;
+  font-size:.68rem;
+  font-weight:600;
+  white-space:nowrap;
+}
+.chip-blue{background:var(--b050);color:var(--b600);}
+.chip-green{background:#e6f7f0;color:var(--ok);}
+.chip-red{background:#fdeaea;color:var(--danger);}
+.chip-warn{background:#fff4e0;color:var(--warn);}
 
-/* ========== LISTS (S3,S5,S7,S8) ========== */
-.list-summary{background:linear-gradient(135deg,var(--b700),var(--b500));padding:12px 16px;color:#fff;display:flex;justify-content:space-between;align-items:center;}
-.list-summary .total-lbl{font-size:.75rem;opacity:.8;}
-.list-summary .total-val{font-size:1.1rem;font-weight:900;}
-.list-summary .count-badge{background:rgba(255,255,255,.15);padding:4px 10px;border-radius:20px;font-size:.75rem;}
+.add-lake-btn{
+  margin:10px 14px;
+  border:2px dashed var(--b200);
+  border-radius:16px;
+  padding:12px;
+  text-align:center;
+  color:var(--b500);
+  font-size:.82rem;
+  font-weight:600;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  background:rgba(122,205,224,.07);
+  transition:all .15s;
+}
+.add-lake-btn i{width:15px;height:15px;}
+.add-lake-btn:hover{background:var(--b050);}
 
-.expense-item{background:#fff;border-radius:var(--radius-sm);padding:12px;margin-bottom:8px;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:10px;}
-.expense-icon{width:36px;height:36px;border-radius:10px;background:var(--b050);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.expense-icon i{width:18px;height:18px;color:var(--b500);}
-.expense-info{flex:1;min-width:0;}
-.expense-name{font-size:.85rem;font-weight:700;color:var(--b900);margin-bottom:2px;}
-.expense-detail{font-size:.72rem;color:#888;}
-.expense-amount{text-align:left;flex-shrink:0;}
-.expense-amount .amt{font-size:.88rem;font-weight:700;color:var(--danger);}
-.expense-amount .date{font-size:.68rem;color:#aaa;display:block;text-align:left;}
+/* ============================
+   S2: LAKE DASHBOARD
+   ============================ */
+#screen-lake-dashboard{background:var(--b010);}
+.s2-header{
+  background:linear-gradient(160deg,var(--b800),var(--b600));
+  padding:0 0 20px;
+  flex-shrink:0;
+}
+.s2-hero{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 16px 16px;
+}
+.s2-lake-icon{
+  position:relative;
+  width:54px;height:54px;
+  border-radius:18px;
+  background:rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;
+  font-size:1.5rem;
+  cursor:pointer;
+  flex-shrink:0;
+}
+.s2-lake-icon i{width:26px;height:26px;}
+.s2-lake-name{font-size:1rem;font-weight:700;color:#fff;flex:1;}
+.s2-stats{
+  display:flex;
+  gap:8px;
+  padding:0 14px;
+}
+.s2-stat-box{
+  flex:1;
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;
+  padding:10px 8px;
+  text-align:center;
+}
+.s2-stat-val{font-size:.85rem;font-weight:700;color:#fff;}
+.s2-stat-lbl{font-size:.63rem;color:var(--b200);margin-top:2px;}
 
-.sale-item{background:#fff;border-radius:var(--radius-sm);padding:12px;margin-bottom:8px;box-shadow:var(--shadow-sm);cursor:pointer;transition:all .15s;}
-.sale-item:hover{transform:translateY(-1px);box-shadow:var(--shadow);}
-.sale-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
-.sale-title{font-size:.85rem;font-weight:700;color:var(--b900);}
-.sale-date{font-size:.7rem;color:#aaa;}
-.sale-total{font-size:.9rem;font-weight:900;color:var(--success);}
-.sale-meta{display:flex;gap:12px;font-size:.72rem;color:#888;margin-bottom:8px;}
-.payment-progress{height:4px;background:#eef;border-radius:2px;overflow:hidden;margin-bottom:4px;}
-.payment-bar{height:100%;background:var(--success);border-radius:2px;transition:width .3s;}
-.payment-labels{display:flex;justify-content:space-between;font-size:.68rem;}
-.paid-lbl{color:var(--success);}
-.remaining-lbl{color:var(--warning);}
+.section-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  padding:14px;
+}
+.section-card{
+  background:#fff;
+  border-radius:16px;
+  padding:14px 12px;
+  box-shadow:0 2px 10px rgba(10,31,46,.07);
+  cursor:pointer;
+  transition:transform .15s,box-shadow .15s;
+}
+.section-card:hover{transform:translateY(-2px);box-shadow:0 5px 16px rgba(10,31,46,.13);}
+.section-icon-wrap{
+  position:relative;
+  width:38px;height:38px;
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;
+  font-size:1.1rem;
+  margin-bottom:8px;
+  cursor:pointer;
+}
+.section-icon-wrap i{width:18px;height:18px;}
+.sec-expenses .section-icon-wrap{background:linear-gradient(135deg,#d94040,#b83030);}
+.sec-sales .section-icon-wrap{background:linear-gradient(135deg,var(--ok),#15704e);}
+.sec-creditor .section-icon-wrap{background:linear-gradient(135deg,var(--warn),#9a5800);}
+.sec-debtor .section-icon-wrap{background:linear-gradient(135deg,var(--b500),var(--b700));}
+.section-card-label{font-size:.78rem;color:#888;margin-bottom:3px;}
+.section-card-val{font-size:.9rem;font-weight:700;color:var(--b800);}
+.section-card-count{font-size:.7rem;color:#aaa;margin-top:2px;}
 
-.person-item{background:#fff;border-radius:var(--radius-sm);padding:12px;margin-bottom:8px;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:10px;}
-.person-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;flex-shrink:0;}
-.avatar-creditor{background:linear-gradient(135deg,#e4f0ff,#b8d8ff);color:#1a5fa8;}
-.avatar-debtor{background:linear-gradient(135deg,#fff0e4,#ffd8b0);color:var(--warning);}
-.person-info{flex:1;}
-.person-name{font-size:.85rem;font-weight:700;color:var(--b900);margin-bottom:2px;}
-.person-type{font-size:.72rem;color:#888;}
-.person-amount{text-align:left;}
-.person-amount .total{font-size:.88rem;font-weight:700;margin-bottom:3px;}
-.person-amount .mini-progress{height:3px;background:#eef;border-radius:2px;width:80px;overflow:hidden;}
-.person-amount .mini-bar{height:100%;border-radius:2px;}
+/* ============================
+   LIST SCREENS (S3,S5,S7,S8)
+   ============================ */
+.list-header-bar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 16px;
+  background:#fff;
+  border-bottom:1px solid var(--b050);
+  flex-shrink:0;
+}
+.list-total-lbl{font-size:.75rem;color:#999;}
+.list-total-val{font-size:1rem;font-weight:700;color:var(--b800);}
+.list-count-badge{
+  padding:4px 10px;
+  background:var(--b050);
+  border-radius:20px;
+  font-size:.72rem;
+  color:var(--b600);
+  font-weight:600;
+}
 
-/* ========== FAB ========== */
-.fab{position:absolute;bottom:20px;left:20px;width:48px;height:48px;background:linear-gradient(135deg,var(--b500),var(--b400));border-radius:50%;border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(26,107,138,.5);transition:all .18s;z-index:50;}
-.fab:hover{transform:scale(1.08);box-shadow:0 6px 24px rgba(26,107,138,.6);}
+.list-item{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:12px 16px;
+  border-bottom:1px solid #f4f8fa;
+  background:#fff;
+}
+.list-item:last-child{border-bottom:none;}
+.list-item-icon{
+  width:38px;height:38px;
+  border-radius:12px;
+  background:var(--b050);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  color:var(--b500);
+}
+.list-item-icon i{width:17px;height:17px;}
+.list-item-body{flex:1;min-width:0;}
+.list-item-name{font-size:.84rem;font-weight:700;color:var(--b800);}
+.list-item-detail{font-size:.72rem;color:#888;margin-top:1px;}
+.list-item-date{font-size:.68rem;color:#aaa;margin-top:3px;}
+.list-item-right{text-align:left;flex-shrink:0;}
+.list-item-amount{font-size:.85rem;font-weight:700;}
+.list-item-amount.red{color:var(--danger);}
+.list-item-amount.green{color:var(--ok);}
+
+/* Progress bar */
+.progress-wrap{margin-top:6px;}
+.progress-lbl-row{display:flex;justify-content:space-between;font-size:.66rem;color:#aaa;margin-bottom:3px;}
+.progress-bar{height:4px;background:#eef3f6;border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--b400),var(--b300));transition:width .4s;}
+.progress-fill.full{background:linear-gradient(90deg,var(--ok),#27c47a);}
+.progress-fill.red{background:linear-gradient(90deg,var(--danger),#e05050);}
+
+.fab{
+  position:absolute;
+  bottom:18px;
+  left:18px;
+  width:48px;height:48px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--b500),var(--b700));
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;
+  box-shadow:0 6px 20px rgba(10,31,46,.3);
+  cursor:pointer;
+  z-index:10;
+}
 .fab i{width:22px;height:22px;}
 
-/* ========== FORMS ========== */
-.form-body{padding:16px;flex:1;overflow-y:auto;}
-.form-group{margin-bottom:14px;}
-.form-label{font-size:.8rem;font-weight:600;color:var(--b700);margin-bottom:5px;display:block;}
-.form-input,.form-select,.form-textarea{width:100%;padding:10px 12px;border:1.5px solid var(--b100);border-radius:var(--radius-xs);font-family:'Tajawal',sans-serif;font-size:.85rem;color:var(--b900);background:#fff;outline:none;transition:border-color .15s;}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--b400);}
-.form-textarea{resize:none;height:72px;}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.form-footer{padding:12px 16px;background:#fff;border-top:1px solid var(--b050);display:flex;gap:8px;flex-shrink:0;}
-.btn-primary{flex:1;padding:11px;background:linear-gradient(135deg,var(--b600),var(--b400));color:#fff;border:none;border-radius:var(--radius-xs);font-family:'Tajawal',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .15s;}
-.btn-primary:hover{filter:brightness(1.08);}
-.btn-secondary{padding:11px 18px;background:var(--b050);color:var(--b700);border:1.5px solid var(--b100);border-radius:var(--radius-xs);font-family:'Tajawal',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .15s;}
-.btn-secondary:hover{background:var(--b100);}
+/* ============================
+   FORM SCREENS (S4, S9)
+   ============================ */
+.form-screen{background:#f8fbfd;}
+.form-section{padding:14px 16px 0;}
+.form-label{font-size:.75rem;color:var(--b700);font-weight:600;margin-bottom:5px;}
+.form-field{
+  background:#fff;
+  border:1.5px solid var(--b100);
+  border-radius:12px;
+  padding:11px 14px;
+  font-size:.82rem;
+  color:var(--b800);
+  width:100%;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.form-field.placeholder{color:#bbb;}
+.form-field-row{display:flex;gap:8px;margin-bottom:12px;}
+.form-field-row .form-field{margin-bottom:0;flex:1;}
+.form-calc-box{
+  background:linear-gradient(135deg,var(--b050),var(--b010));
+  border:1.5px solid var(--b100);
+  border-radius:12px;
+  padding:12px 14px;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.form-calc-lbl{font-size:.75rem;color:var(--b600);}
+.form-calc-val{font-size:1rem;font-weight:700;color:var(--b700);}
+.form-textarea{
+  background:#fff;
+  border:1.5px solid var(--b100);
+  border-radius:12px;
+  padding:11px 14px;
+  font-size:.82rem;
+  color:var(--b800);
+  width:100%;
+  margin-bottom:12px;
+  height:64px;
+  display:flex;
+  align-items:flex-start;
+}
+.form-footer{
+  display:flex;
+  gap:8px;
+  padding:12px 16px;
+  background:#fff;
+  border-top:1px solid var(--b050);
+  flex-shrink:0;
+}
+.btn-primary{
+  flex:1;
+  padding:12px;
+  background:linear-gradient(135deg,var(--b500),var(--b700));
+  border:none;
+  border-radius:14px;
+  color:#fff;
+  font-family:'Tajawal',sans-serif;
+  font-size:.88rem;
+  font-weight:700;
+  cursor:pointer;
+  text-align:center;
+}
+.btn-secondary{
+  padding:12px 18px;
+  background:var(--b050);
+  border:none;
+  border-radius:14px;
+  color:var(--b700);
+  font-family:'Tajawal',sans-serif;
+  font-size:.88rem;
+  font-weight:600;
+  cursor:pointer;
+}
 
-/* ========== BOTTOM SHEET ========== */
-.bottom-sheet-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:flex-end;}
-.bottom-sheet{background:#fff;border-radius:24px 24px 0 0;padding:20px 16px;width:100%;max-height:85%;}
-.sheet-handle{width:40px;height:4px;background:#ddd;border-radius:2px;margin:0 auto 16px;}
-.sheet-title{font-size:1rem;font-weight:700;color:var(--b900);margin-bottom:14px;text-align:center;}
+/* ============================
+   S6: ADD PAYMENT (overlay)
+   ============================ */
+#screen-add-payment{
+  background:rgba(10,31,46,.35);
+  backdrop-filter:blur(3px);
+}
+.payment-sheet{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  background:#fff;
+  border-radius:24px 24px 0 0;
+  padding:0 0 20px;
+  max-height:85%;
+  overflow-y:auto;
+}
+.sheet-handle{
+  width:38px;height:4px;
+  background:#e0e8ed;
+  border-radius:2px;
+  margin:10px auto 0;
+}
+.sheet-title{
+  font-size:.9rem;font-weight:700;
+  color:var(--b800);
+  padding:12px 18px;
+  border-bottom:1px solid var(--b050);
+}
+.payment-hist-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 18px;
+  border-bottom:1px solid #f4f7fa;
+  font-size:.78rem;
+  color:var(--b800);
+}
+.payment-hist-amount{font-weight:700;color:var(--ok);}
+.payment-summary{
+  display:flex;gap:8px;
+  padding:10px 16px;
+}
+.pay-sum-card{
+  flex:1;
+  background:var(--b050);
+  border-radius:12px;
+  padding:10px;
+  text-align:center;
+}
+.pay-sum-val{font-size:.92rem;font-weight:700;color:var(--b700);}
+.pay-sum-lbl{font-size:.68rem;color:#888;margin-top:2px;}
 
-/* ========== ICON PICKER MODAL ========== */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;}
-.modal-box{background:#fff;border-radius:20px;width:100%;max-width:480px;max-height:80vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.4);}
-.modal-header{padding:18px 20px 12px;border-bottom:1px solid #f0f4f6;}
-.modal-header h3{font-size:1rem;font-weight:700;color:var(--b900);margin-bottom:10px;}
-.modal-search{width:100%;padding:9px 14px;border:1.5px solid var(--b100);border-radius:var(--radius-xs);font-family:'Tajawal',sans-serif;font-size:.85rem;outline:none;transition:border-color .15s;}
-.modal-search:focus{border-color:var(--b400);}
-.modal-tabs{display:flex;gap:4px;margin-top:10px;overflow-x:auto;padding-bottom:2px;}
-.modal-tabs::-webkit-scrollbar{display:none;}
-.tab-btn{padding:5px 12px;border-radius:20px;border:1.5px solid var(--b100);background:#fff;font-family:'Tajawal',sans-serif;font-size:.75rem;color:var(--b700);cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0;}
-.tab-btn:hover{border-color:var(--b300);background:var(--b050);}
-.tab-btn.active{background:var(--b700);color:#fff;border-color:var(--b700);}
-.modal-body{flex:1;overflow-y:auto;padding:14px 16px;}
-.icon-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
-.icon-option{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px;border-radius:var(--radius-xs);border:1.5px solid transparent;cursor:pointer;transition:all .15s;background:#fafafa;}
-.icon-option:hover{background:var(--b050);border-color:var(--b200);}
-.icon-option.selected{background:var(--b700);border-color:var(--b700);}
-.icon-option.selected i,.icon-option.selected span.icon-label{color:#fff;}
-.icon-option i{width:24px;height:24px;color:var(--b600);}
-.icon-option .emoji-disp{font-size:22px;line-height:1;height:24px;display:flex;align-items:center;}
-.icon-label{font-size:.65rem;color:var(--b700);text-align:center;line-height:1.2;}
-.modal-footer{padding:12px 16px;border-top:1px solid #f0f4f6;display:flex;gap:8px;}
+/* ============================
+   PERSON CARD (creditors/debtors)
+   ============================ */
+.person-card{
+  background:#fff;
+  margin:0 14px;
+  margin-top:10px;
+  border-radius:16px;
+  padding:14px;
+  box-shadow:0 2px 10px rgba(10,31,46,.07);
+}
+.person-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.person-avatar{
+  width:40px;height:40px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;font-weight:700;
+  color:#fff;
+  flex-shrink:0;
+}
+.avatar-ok{background:linear-gradient(135deg,var(--ok),#27c47a);}
+.avatar-warn{background:linear-gradient(135deg,var(--warn),#e88000);}
+.avatar-blue{background:linear-gradient(135deg,var(--b500),var(--b400));}
+.person-name{font-size:.86rem;font-weight:700;color:var(--b800);}
+.person-type{font-size:.7rem;color:#888;}
+.person-amount{font-size:.92rem;font-weight:700;margin-right:auto;}
 
-/* ========== TOAST ========== */
-.toast-container{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:2000;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
-.toast{background:var(--b900);color:#fff;padding:10px 20px;border-radius:20px;font-size:.85rem;font-family:'Tajawal',sans-serif;box-shadow:0 4px 20px rgba(0,0,0,.3);opacity:0;transform:translateY(-10px);transition:all .25s;pointer-events:none;}
-.toast.show{opacity:1;transform:translateY(0);}
+/* ============================
+   SHOWCASE SECTION
+   ============================ */
+.showcase-section{
+  padding:0 32px 64px;
+  overflow:hidden;
+  max-height:0;
+  transition:max-height .5s cubic-bezier(.4,0,.2,1),padding .4s;
+}
+.showcase-section.open{
+  max-height:800px;
+  padding:0 32px 64px;
+}
+.showcase-divider{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-bottom:28px;
+  color:var(--b700);
+  font-size:.9rem;
+  font-weight:700;
+}
+.showcase-divider::before,.showcase-divider::after{
+  content:'';flex:1;
+  height:1px;
+  background:rgba(10,31,46,.15);
+}
+.showcase-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(148px,1fr));
+  gap:20px;
+}
+.mini-phone-wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+}
+.mini-phone{
+  width:148px;height:280px;
+  background:var(--b900);
+  border-radius:22px;
+  padding:6px;
+  box-shadow:0 12px 32px rgba(10,31,46,.22),0 0 0 1px rgba(255,255,255,.07);
+  transition:transform .2s,box-shadow .2s;
+}
+.mini-phone:hover{transform:translateY(-6px) scale(1.03);box-shadow:0 20px 44px rgba(10,31,46,.3);}
+.mini-phone-inner{
+  width:100%;height:100%;
+  border-radius:17px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.mini-label{
+  font-size:.73rem;
+  font-weight:600;
+  color:var(--b700);
+  text-align:center;
+}
+/* Mini phone screen shapes */
+.mini-status{height:12px;flex-shrink:0;}
+.mini-header{flex-shrink:0;}
+.mini-body{flex:1;padding:5px;}
+.mini-card{
+  background:rgba(255,255,255,.9);
+  border-radius:5px;
+  margin-bottom:4px;
+}
+.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;}
+.mini-grid-card{border-radius:5px;height:42px;}
 
-/* ========== MINI PHONE (Showcase) ========== */
-.mini-phone-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;}
-.mini-phone-label{font-size:.72rem;font-weight:600;color:var(--b700);text-align:center;}
-.mini-phone{width:148px;height:300px;background:var(--b900);border-radius:20px;padding:5px;box-shadow:0 6px 20px rgba(10,31,46,.3);cursor:pointer;transition:all .18s;}
-.mini-phone:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(10,31,46,.4);}
-.mini-screen{width:100%;height:100%;background:var(--b010);border-radius:16px;overflow:hidden;position:relative;}
-.mini-screen .ms-bar{height:10px;background:var(--b900);}
-.mini-screen .ms-header{padding:5px 7px;display:flex;align-items:center;gap:4px;}
-.mini-screen .ms-h-bg1{background:var(--b800);}
-.mini-screen .ms-h-bg2{background:linear-gradient(135deg,var(--b800),var(--b600));}
-.mini-screen .ms-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.2);}
-.mini-screen .ms-title{font-size:5px;color:#fff;font-weight:700;font-family:'Tajawal',sans-serif;flex:1;}
-.mini-screen .ms-body{padding:5px 6px;}
-.mini-screen .ms-card{background:#fff;border-radius:5px;padding:4px 5px;margin-bottom:3px;box-shadow:0 1px 3px rgba(0,0,0,.1);}
-.mini-screen .ms-row{display:flex;gap:3px;align-items:center;margin-bottom:2px;}
-.mini-screen .ms-icon{width:9px;height:9px;border-radius:3px;background:linear-gradient(135deg,var(--b600),var(--b400));}
-.mini-screen .ms-line{height:4px;background:#e8eef2;border-radius:2px;flex:1;}
-.mini-screen .ms-line-s{height:4px;background:#e8eef2;border-radius:2px;width:50%;}
-.mini-screen .ms-line-g{height:4px;background:linear-gradient(90deg,var(--success),#c8f0d8);border-radius:2px;}
-.mini-screen .ms-line-r{height:4px;background:linear-gradient(90deg,var(--danger),#ffd0d0);border-radius:2px;}
-.mini-screen .ms-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:0 6px;}
-.mini-screen .ms-sect{background:#fff;border-radius:4px;padding:5px 4px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.08);}
-.mini-screen .ms-sect-icon{width:14px;height:14px;border-radius:4px;margin:0 auto 2px;}
-.mini-screen .ms-sect-icon.exp{background:linear-gradient(135deg,#fce4e4,#f8c8c8);}
-.mini-screen .ms-sect-icon.sale{background:linear-gradient(135deg,#e4f8ee,#c8f0d8);}
-.mini-screen .ms-sect-icon.cred{background:linear-gradient(135deg,#e4f0ff,#c8dfff);}
-.mini-screen .ms-sect-icon.deb{background:linear-gradient(135deg,#fff5e4,#ffe8c0);}
-.mini-screen .ms-sect-t{font-size:4px;color:var(--b800);font-family:'Tajawal',sans-serif;font-weight:600;}
-.mini-screen .ms-hero{background:linear-gradient(135deg,var(--b700),var(--b500));margin:4px 6px;border-radius:6px;padding:5px 6px;}
-.mini-screen .ms-hero-t{font-size:5px;color:#fff;font-family:'Tajawal',sans-serif;font-weight:700;margin-bottom:3px;}
-.mini-screen .ms-hero-stats{display:flex;gap:6px;}
-.mini-screen .ms-hero-s{font-size:4px;color:rgba(255,255,255,.85);font-family:'Tajawal',sans-serif;}
-.mini-screen .ms-form-field{height:10px;background:#fff;border:1px solid var(--b100);border-radius:3px;margin-bottom:3px;}
-.mini-screen .ms-btn{height:12px;background:linear-gradient(135deg,var(--b600),var(--b400));border-radius:4px;margin-top:4px;}
-.mini-screen .ms-prog{height:3px;background:#eef;border-radius:2px;margin-top:3px;overflow:hidden;}
-.mini-screen .ms-prog-bar{height:100%;background:var(--success);border-radius:2px;}
-.mini-screen .ms-sheet{position:absolute;bottom:0;left:0;right:0;height:45%;background:#fff;border-radius:8px 8px 0 0;padding:6px;}
-.mini-screen .ms-sheet-t{font-size:5px;font-family:'Tajawal',sans-serif;color:var(--b900);text-align:center;font-weight:700;margin-bottom:5px;}
+/* ============================
+   ICON PICKER (bottom sheet)
+   ============================ */
+.picker-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(10,31,46,.55);
+  backdrop-filter:blur(4px);
+  z-index:500;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s;
+}
+.picker-overlay.open{opacity:1;pointer-events:auto;}
+.picker-sheet{
+  width:100%;
+  max-width:540px;
+  background:#fff;
+  border-radius:28px 28px 0 0;
+  max-height:75vh;
+  display:flex;
+  flex-direction:column;
+  transform:translateY(100%);
+  transition:transform .3s cubic-bezier(.34,1.2,.64,1);
+}
+.picker-overlay.open .picker-sheet{transform:translateY(0);}
+.picker-handle{width:38px;height:4px;background:#e0e8ed;border-radius:2px;margin:12px auto;}
+.picker-title{
+  font-size:.95rem;font-weight:700;color:var(--b800);
+  padding:4px 18px 12px;
+  border-bottom:1px solid var(--b050);
+}
+.picker-tabs{
+  display:flex;
+  gap:4px;
+  padding:10px 16px;
+  border-bottom:1px solid var(--b050);
+  overflow-x:auto;
+  flex-shrink:0;
+}
+.picker-tabs::-webkit-scrollbar{display:none;}
+.picker-tab{
+  padding:6px 12px;
+  border-radius:20px;
+  font-size:.75rem;
+  font-weight:600;
+  cursor:pointer;
+  border:none;
+  font-family:'Tajawal',sans-serif;
+  background:var(--b050);
+  color:var(--b600);
+  white-space:nowrap;
+  transition:all .15s;
+  flex-shrink:0;
+}
+.picker-tab.active{background:var(--b500);color:#fff;}
+.picker-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:4px;
+  padding:12px;
+  overflow-y:auto;
+  flex:1;
+}
+.picker-icon-btn{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  padding:8px 4px;
+  border-radius:12px;
+  cursor:pointer;
+  border:2px solid transparent;
+  background:none;
+  transition:all .15s;
+}
+.picker-icon-btn:hover{background:var(--b050);}
+.picker-icon-btn.selected{background:var(--b700);border-color:var(--b700);}
+.picker-icon-btn.selected .picker-icon-box{background:rgba(255,255,255,.15);}
+.picker-icon-btn.selected .picker-icon-box i{color:#fff;}
+.picker-icon-btn.selected .picker-icon-lbl{color:#fff;}
+.picker-icon-box{
+  width:36px;height:36px;
+  border-radius:10px;
+  background:var(--b050);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;
+  color:var(--b600);
+}
+.picker-icon-box i{width:18px;height:18px;}
+.picker-icon-lbl{font-size:.6rem;color:#888;font-family:'Tajawal',sans-serif;}
+.picker-footer{
+  display:flex;
+  gap:8px;
+  padding:12px 16px;
+  border-top:1px solid var(--b050);
+  flex-shrink:0;
+}
 
-/* ========== UTILITIES ========== */
-.empty-state{text-align:center;padding:32px 16px;color:#aaa;}
-.empty-state i{width:40px;height:40px;opacity:.4;margin-bottom:8px;}
-.text-danger{color:var(--danger);}
-.text-success{color:var(--success);}
-.text-warning{color:var(--warning);}
-.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:.68rem;font-weight:600;}
-.badge-success{background:#e8f8f0;color:var(--success);}
-.badge-warning{background:#fff5e4;color:var(--warning);}
-.badge-danger{background:#fff0f0;color:var(--danger);}
+/* ============================
+   TOAST
+   ============================ */
+.toast{
+  position:fixed;
+  top:80px;left:50%;
+  transform:translateX(-50%) translateY(-20px);
+  background:rgba(10,31,46,.9);
+  color:#fff;
+  padding:10px 24px;
+  border-radius:30px;
+  font-size:.85rem;
+  font-weight:600;
+  z-index:600;
+  opacity:0;
+  transition:opacity .3s,transform .3s;
+  pointer-events:none;
+  white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ============================
+   SALE CARD
+   ============================ */
+.sale-card{
+  background:#fff;
+  margin:0 14px;
+  margin-top:10px;
+  border-radius:16px;
+  padding:14px;
+  box-shadow:0 2px 10px rgba(10,31,46,.07);
+  cursor:pointer;
+  transition:transform .15s;
+}
+.sale-card:hover{transform:translateY(-2px);}
+.sale-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.sale-card-name{font-size:.86rem;font-weight:700;color:var(--b800);}
+.sale-card-date{font-size:.7rem;color:#aaa;}
+.sale-card-amount{font-size:.92rem;font-weight:700;color:var(--ok);}
+.sale-card-meta{display:flex;gap:8px;font-size:.72rem;color:#888;margin-bottom:8px;}
+.sale-paid-row{display:flex;justify-content:space-between;font-size:.68rem;margin-top:4px;}
+.sale-paid-label{color:var(--ok);font-weight:600;}
+.sale-remain-label{color:var(--danger);font-weight:600;}
+.sale-card-done{
+  display:flex;align-items:center;gap:4px;
+  font-size:.72rem;font-weight:600;color:var(--ok);
+  margin-top:4px;
+}
+.sale-card-done i{width:13px;height:13px;}
+
+/* ============================
+   SCREEN-SPECIFIC BACKGROUNDS
+   ============================ */
+#screen-expenses{background:#f8fbfd;}
+#screen-sales{background:#f8fbfd;}
+#screen-creditors{background:#f8fbfd;}
+#screen-debtors{background:#f8fbfd;}
+#screen-add-expense{background:#f8fbfd;}
+#screen-add-sale{background:#f8fbfd;}
 </style>
 </head>
 <body>
 
-<!-- TOAST -->
-<div class="toast-container" id="toastContainer"></div>
-
-<!-- ICON PICKER MODAL -->
-<div class="modal-overlay" id="iconPickerModal" style="display:none;">
-  <div class="modal-box">
-    <div class="modal-header">
-      <h3>اختر أيقونة</h3>
-      <input class="modal-search" id="iconSearch" placeholder="ابحث عن أيقونة..." oninput="filterIcons()">
-      <div class="modal-tabs" id="iconTabs">
-        <button class="tab-btn active" onclick="setIconTab('all')">الكل</button>
-        <button class="tab-btn" onclick="setIconTab('nature')">طبيعة</button>
-        <button class="tab-btn" onclick="setIconTab('animals')">حيوانات</button>
-        <button class="tab-btn" onclick="setIconTab('finance')">مالية</button>
-        <button class="tab-btn" onclick="setIconTab('tools')">أدوات</button>
-        <button class="tab-btn" onclick="setIconTab('emoji')">إيموجي</button>
-      </div>
-    </div>
-    <div class="modal-body">
-      <div class="icon-grid" id="iconGrid"></div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-primary" onclick="confirmIconPick()">تطبيق</button>
-      <button class="btn-secondary" onclick="closeIconPicker()">إلغاء</button>
-    </div>
+<!-- ============================
+     TOP BAR
+     ============================ -->
+<header class="top-bar">
+  <div class="top-bar-logo">
+    <i data-lucide="waves"></i>
+    <span>محاسيب البحيرات</span>
+    <small>Interactive Preview</small>
   </div>
-</div>
+  <button class="showcase-toggle-btn" onclick="toggleShowcase()" id="showcaseBtn">
+    <i data-lucide="layout-grid"></i>
+    عرض الشاشات
+  </button>
+</header>
 
-<!-- PAGE HEADER -->
-<div class="page-header">
-  <i data-lucide="fish" style="width:28px;height:28px;color:var(--b200)"></i>
-  <div>
-    <h1>محاسيب البحيرات</h1>
-    <div class="subtitle">نموذج تفاعلي — Fish Farm Financial Manager</div>
-  </div>
-</div>
+<!-- ============================
+     HERO AREA
+     ============================ -->
+<main class="hero-area">
 
-<!-- MAIN LAYOUT -->
-<div class="main-layout">
+  <!-- Phone Row -->
+  <div class="phone-row">
+    <button class="arrow-btn" onclick="prevScreen()" title="السابق">
+      <i data-lucide="chevron-right"></i>
+    </button>
 
-  <!-- SIDE PANEL -->
-  <div class="side-panel">
-    <div class="panel-card">
-      <h3><i data-lucide="layout-grid" style="width:14px;height:14px"></i> الشاشات</h3>
-      <button class="nav-btn active" id="nav-lakes-list" onclick="navigate('lakes-list')"><span class="dot"></span>قائمة البحيرات</button>
-      <button class="nav-btn" id="nav-lake-dashboard" onclick="navigate('lake-dashboard',{lakeId:1})"><span class="dot"></span>لوحة البحيرة</button>
-      <button class="nav-btn" id="nav-expenses" onclick="navigate('expenses',{lakeId:1})"><span class="dot"></span>المصروفات</button>
-      <button class="nav-btn" id="nav-add-expense" onclick="navigate('add-expense',{lakeId:1})"><span class="dot"></span>إضافة مصروف</button>
-      <button class="nav-btn" id="nav-sales" onclick="navigate('sales',{lakeId:1})"><span class="dot"></span>المبيعات</button>
-      <button class="nav-btn" id="nav-add-payment" onclick="navigate('add-payment',{lakeId:1,saleId:1})"><span class="dot"></span>إضافة دفعة</button>
-      <button class="nav-btn" id="nav-creditors" onclick="navigate('creditors',{lakeId:1})"><span class="dot"></span>الدائنون</button>
-      <button class="nav-btn" id="nav-debtors" onclick="navigate('debtors',{lakeId:1})"><span class="dot"></span>المدينون</button>
-      <button class="nav-btn" id="nav-add-sale" onclick="navigate('add-sale',{lakeId:1})"><span class="dot"></span>إضافة بيعة</button>
-    </div>
-    <div class="panel-card" id="iconControlsCard">
-      <h3><i data-lucide="image" style="width:14px;height:14px"></i> الأيقونات</h3>
-      <div id="iconControlsList"></div>
-    </div>
-    <div class="tip-box">
-      <i data-lucide="info" style="width:14px;height:14px;flex-shrink:0;margin-top:1px"></i>
-      <span>انقر على أي أيقونة للتغيير — تتحدث الشاشة والعرض التوضيحي فوراً</span>
-    </div>
-  </div>
-
-  <!-- PHONE -->
-  <div class="phone-area">
+    <!-- Phone Shell -->
     <div class="phone-shell">
       <div class="phone-notch"></div>
       <div class="phone-screen" id="phoneScreen">
 
-        <!-- S1: Lakes List -->
+        <!-- ======== S1: LAKES LIST ======== -->
         <div class="screen active" id="screen-lakes-list">
-          <div class="status-bar">
-            <span class="status-time">9:41</span>
-            <div class="status-icons">
-              <i data-lucide="signal" style="width:14px;height:14px"></i>
-              <i data-lucide="wifi" style="width:14px;height:14px"></i>
-              <i data-lucide="battery" style="width:14px;height:14px"></i>
-            </div>
-          </div>
-          <div class="app-header" style="background:var(--b900);">
-            <i data-lucide="fish" style="width:22px;height:22px;color:var(--b200)"></i>
-            <h2>محاسيب البحيرات</h2>
-            <button class="header-action" onclick="showToast('الإعدادات قريباً')"><i data-lucide="settings"></i></button>
-          </div>
-          <div class="screen-body">
-            <div class="hero-banner">
-              <h3>مرحباً بك 👋</h3>
-              <p>إدارة مالية متكاملة لمزارع الأسماك</p>
-              <div class="hero-stats">
-                <div class="hero-stat"><span class="val">3</span><span class="lbl">بحيرات</span></div>
-                <div class="hero-stat"><span class="val">54.8M</span><span class="lbl">مبيعات</span></div>
-                <div class="hero-stat"><span class="val">22.9M</span><span class="lbl">مصروفات</span></div>
+          <div class="s1-header">
+            <div class="status-bar">
+              <span>9:41</span>
+              <div class="status-icons">
+                <i data-lucide="signal"></i>
+                <i data-lucide="wifi"></i>
+                <i data-lucide="battery-full"></i>
               </div>
             </div>
-            <div class="section-label">بحيراتي</div>
-            <div id="lakesList"></div>
-            <button class="add-lake-btn" onclick="showToast('إضافة بحيرة جديدة')">
-              <i data-lucide="plus"></i> إضافة بحيرة
-            </button>
+            <div class="s1-app-bar">
+              <div class="s1-app-bar-icon">
+                <i data-lucide="fish"></i>
+              </div>
+              <span class="s1-app-bar-title">محاسيب البحيرات</span>
+              <button class="app-bar-btn" onclick="void(0)"><i data-lucide="settings"></i></button>
+            </div>
+            <div class="s1-hero">
+              <div class="s1-stat">
+                <div class="s1-stat-val">3</div>
+                <div class="s1-stat-lbl">بحيرات</div>
+              </div>
+              <div class="s1-stat-sep"></div>
+              <div class="s1-stat">
+                <div class="s1-stat-val">54.8M</div>
+                <div class="s1-stat-lbl">مبيعات</div>
+              </div>
+              <div class="s1-stat-sep"></div>
+              <div class="s1-stat">
+                <div class="s1-stat-val">22.9M</div>
+                <div class="s1-stat-lbl">مصروفات</div>
+              </div>
+            </div>
+          </div>
+          <div class="screen-scroll" id="lakesList">
+            <!-- Lake cards injected by renderAllDynamic() -->
           </div>
         </div>
 
-        <!-- S2: Lake Dashboard -->
+        <!-- ======== S2: LAKE DASHBOARD ======== -->
         <div class="screen" id="screen-lake-dashboard">
-          <div class="status-bar">
-            <span class="status-time">9:41</span>
-            <div class="status-icons">
-              <i data-lucide="signal" style="width:14px;height:14px"></i>
-              <i data-lucide="wifi" style="width:14px;height:14px"></i>
-              <i data-lucide="battery" style="width:14px;height:14px"></i>
+          <div class="s2-header">
+            <div class="status-bar">
+              <span>9:41</span>
+              <div class="status-icons">
+                <i data-lucide="signal"></i><i data-lucide="wifi"></i><i data-lucide="battery-full"></i>
+              </div>
+            </div>
+            <div class="app-bar">
+              <button class="app-bar-btn" onclick="goBack()"><i data-lucide="chevron-right"></i></button>
+              <span class="app-bar-title" id="s2Title">بحيرة النور</span>
+              <button class="app-bar-btn"><i data-lucide="edit-3"></i></button>
+            </div>
+            <div class="s2-hero">
+              <div class="s2-lake-icon" id="s2LakeIcon" onclick="openPicker('lake_1')">
+                <!-- dynamic -->
+                <div class="edit-badge"><i data-lucide="pencil"></i></div>
+              </div>
+              <div>
+                <div class="s2-lake-name" id="s2LakeName">بحيرة النور</div>
+                <div style="font-size:.7rem;color:var(--b200);">آخر تحديث: اليوم</div>
+              </div>
+            </div>
+            <div class="s2-stats">
+              <div class="s2-stat-box">
+                <div class="s2-stat-val">12.5M</div>
+                <div class="s2-stat-lbl">مصروفات</div>
+              </div>
+              <div class="s2-stat-box">
+                <div class="s2-stat-val">28.4M</div>
+                <div class="s2-stat-lbl">مبيعات</div>
+              </div>
+              <div class="s2-stat-box" style="background:rgba(30,138,94,.2);border-color:rgba(30,138,94,.25);">
+                <div class="s2-stat-val" style="color:#6dffc0;">15.9M</div>
+                <div class="s2-stat-lbl" style="color:#adf0cc;">صافي</div>
+              </div>
             </div>
           </div>
-          <div class="app-header">
-            <button class="back-btn" onclick="goBack()"><i data-lucide="chevron-right"></i></button>
-            <h2 id="dashLakeName">بحيرة الشمال</h2>
-            <button class="header-action" onclick="showToast('تعديل البحيرة')"><i data-lucide="edit-2"></i></button>
+          <div class="screen-scroll">
+            <div class="section-grid" id="sectionGrid">
+              <div class="section-card sec-expenses" onclick="navigate('expenses')">
+                <div class="section-icon-wrap" id="secExpensesWrap" onclick="event.stopPropagation();openPicker('sec_expenses')">
+                  <!-- dynamic -->
+                  <div class="edit-badge"><i data-lucide="pencil"></i></div>
+                </div>
+                <div class="section-card-label">الصرفيات</div>
+                <div class="section-card-val">12.5M د.ع</div>
+                <div class="section-card-count">5 بنود</div>
+              </div>
+              <div class="section-card sec-sales" onclick="navigate('sales')">
+                <div class="section-icon-wrap" id="secSalesWrap" onclick="event.stopPropagation();openPicker('sec_sales')">
+                  <!-- dynamic -->
+                  <div class="edit-badge"><i data-lucide="pencil"></i></div>
+                </div>
+                <div class="section-card-label">المبيعات</div>
+                <div class="section-card-val">28.4M د.ع</div>
+                <div class="section-card-count">3 بيعات</div>
+              </div>
+              <div class="section-card sec-creditor" onclick="navigate('creditors')">
+                <div class="section-icon-wrap" id="secCreditorWrap" onclick="event.stopPropagation();openPicker('sec_creditor')">
+                  <!-- dynamic -->
+                  <div class="edit-badge"><i data-lucide="pencil"></i></div>
+                </div>
+                <div class="section-card-label">الدائنون</div>
+                <div class="section-card-val">4.2M د.ع</div>
+                <div class="section-card-count">2 دائنون</div>
+              </div>
+              <div class="section-card sec-debtor" onclick="navigate('debtors')">
+                <div class="section-icon-wrap" id="secDebtorWrap" onclick="event.stopPropagation();openPicker('sec_debtor')">
+                  <!-- dynamic -->
+                  <div class="edit-badge"><i data-lucide="pencil"></i></div>
+                </div>
+                <div class="section-card-label">المدينون</div>
+                <div class="section-card-val">3.1M د.ع</div>
+                <div class="section-card-count">2 مدينون</div>
+              </div>
+            </div>
           </div>
-          <div class="lake-summary" id="lakeSummary"></div>
-          <div class="section-grid" id="sectionGrid"></div>
         </div>
 
-        <!-- S3: Expenses -->
+        <!-- ======== S3: EXPENSES ======== -->
         <div class="screen" id="screen-expenses">
-          <div class="status-bar">
-            <span class="status-time">9:41</span>
-            <div class="status-icons">
-              <i data-lucide="signal" style="width:14px;height:14px"></i>
-              <i data-lucide="wifi" style="width:14px;height:14px"></i>
-              <i data-lucide="battery" style="width:14px;height:14px"></i>
+          <div class="status-bar dark" style="background:var(--b700);color:#fff;">
+            <span>9:41</span>
+            <div class="status-icons"><i data-lucide="signal"></i><i data-lucide="wifi"></i><i data-lucide="battery-full"></i></div>
+          </div>
+          <div class="app-bar blue">
+            <button class="app-bar-btn" onclick="goBack()"><i data-lucide="chevron-right"></i></button>
+            <span class="app-bar-title">المصروفات</span>
+            <button class="app-bar-btn" onclick="navigate('add-expense')"><i data-lucide="filter"></i></button>
+          </div>
+          <div class="list-header-bar">
+            <div>
+              <div class="list-total-lbl">إجمالي المصروفات</div>
+              <div class="list-total-val">12,500,000 د.ع</div>
+            </div>
+            <div class="list-count-badge">5 بنود</div>
+          </div>
+          <div class="screen-scroll" style="position:relative;">
+            <div class="list-item">
+              <div class="list-item-icon"><i data-lucide="wheat"></i></div>
+              <div class="list-item-body">
+                <div class="list-item-name">علف أسماك</div>
+                <div class="list-item-detail">5 طن × 1,000,000</div>
+                <div class="list-item-date">01/05/2026</div>
+              </div>
+              <div class="list-item-right">
+                <div class="list-item-amount red">5,000,000</div>
+                <div style="font-size:.66rem;color:#aaa;text-align:left;">د.ع</div>
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="list-item-icon"><i data-lucide="pill"></i></div>
+              <div class="list-item-body">
+                <div class="list-item-name">أدوية ومضادات</div>
+                <div class="list-item-detail">3 عبوات × 250,000</div>
+                <div class="list-item-date">15/04/2026</div>
+              </div>
+              <div class="list-item-right">
+                <div class="list-item-amount red">750,000</div>
+                <div style="font-size:.66rem;color:#aaa;text-align:left;">د.ع</div>
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="list-item-icon"><i data-lucide="wrench"></i></div>
+              <div class="list-item-body">
+                <div class="list-item-name">صيانة مضخة</div>
+                <div class="list-item-detail">خدمة</div>
+                <div class="list-item-date">10/04/2026</div>
+              </div>
+              <div class="list-item-right">
+                <div class="list-item-amount red">350,000</div>
+                <div style="font-size:.66rem;color:#aaa;text-align:left;">د.ع</div>
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="list-item-icon"><i data-lucide="users"></i></div>
+              <div class="list-item-body">
+                <div class="list-item-name">أجور عمال</div>
+                <div class="list-item-detail">4 أشخاص × 750,000</div>
+                <div class="list-item-date">30/04/2026</div>
+              </div>
+              <div class="list-item-right">
+                <div class="list-item-amount red">3,000,000</div>
+                <div style="font-size:.66rem;color:#aaa;text-align:left;">د.ع</div>
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="list-item-icon"><i data-lucide="fuel"></i></div>
+              <div class="list-item-body">
+                <div class="list-item-name">وقود مولد</div>
+                <div class="list-item-detail">200 لتر × 1,000</div>
+                <div class="list-item-date">28/04/2026</div>
+              </div>
+              <div class="list-item-right">
+                <div class="list-item-amount red">200,000</div>
+                <div style="font-size:.66rem;color:#aaa;text-align:left;">د.ع</div>
+              </div>
             </div>
           </div>
-          <div class="app-header">
-            <button class="back-btn" onclick="goBack()"><i data-lucide="chevron-right"></i></button>
-            <h2>المصروفات</h2>
-            <button class="header-action" onclick="showToast('تصفية المصروفات')"><i data-lucide="filter"></i></button>
-          </div>
-          <div class="list-summary">
-            <div><div class="total-lbl">إجمالي المصروفات</div><div class="total-val">12.5M ج.س</div></div>
-            <div class="count-badge">5 بنود</div>
-          </div>
-          <div class="screen-body" style="padding:12px;">
-            <div id="expensesList"></div>
-          </div>
-          <button class="fab" onclick="navigate('add-expense',{lakeId:state.lakeId})"><i data-lucide="plus"></i></button>
+          <div class="fab" onclick="navigate('add-expense')"><i data-lucide="plus"></i></div>
         </div>
 
-        <!-- S4: Add Expense -->
-        <div class="screen" id="screen-add-expense">
-          <div class="status-bar">
-            <span class="status-time">9:41</span>
-            <div class="status-icons">
-              <i data-lucide="signal" style="width:14px;height:14px"></i>
-              <i data-lucide="wifi" style="width:14px;height:14px"></i>
-              <i data-lucide="battery" style="width:14px;height:14px"></i>
-            </div>
+        <!-- ======== S4: ADD EXPENSE ======== -->
+        <div class="screen form-screen" id="screen-add-expense">
+          <div class="status-bar dark" style="background:var(--b700);color:#fff;">
+            <span>9:41</span>
+            <div class="status-icons"><i data-lucide="signal"></i><i data-lucide="wifi"></i><i data-lucide="battery-full"></i></div>
           </div>
-          <div class="app-header">
-            <button class="back-btn" onclick="goBack()"><i data-lucide="chevron-right"></i></button>
-            <h2>إضافة مصروف</h2>
+          <div class="app-bar blue">
+            <button class="app-bar-btn" onclick="goBack()"><i data-lucide="chevron-right"></i></button>
+            <span class="app-bar-title">إضافة مصروف</span>
+            <div style="width:34px;"></div>
           </div>
-          <div class="form-body">
-            <div class="form-group">
-              <label class="form-label">اسم المصروف</label>
-              <input class="form-input" placeholder="مثال: علف أسماك">
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">الكمية</label>
-                <input class="form-input" type="number" placeholder="0">
+          <div class="screen-scroll">
+            <div class="form-section">
+              <div class="form-label">المادة / الصنف</div>
+              <div class="form-field placeholder">اكتب اسم المادة...</div>
+              <div class="form-label">الكمية والوحدة</div>
+              <div class="form-field-row">
+                <div class="form-field placeholder">الكمية</div>
+                <div class="form-field placeholder">الوحدة</div>
               </div>
-              <div class="form-group">
-                <label class="form-label">الوحدة</label>
-                <select class="form-select">
-                  <option>طن</option><option>عبوة</option><option>لتر</option><option>خدمة</option><option>شخص</option>
-                </select>
+              <div class="form-label">سعر الوحدة (د.ع)</div>
+              <div class="form-field placeholder">0</div>
+              <div class="form-calc-box">
+                <div class="form-calc-lbl">الإجمالي المحسوب</div>
+                <div class="form-calc-val">0 د.ع</div>
               </div>
-            </div>
-            <div class="form-group">
-              <label class="form-label">السعر للوحدة (ج.س)</label>
-              <input class="form-input" type="number" placeholder="0">
-            </div>
-            <div class="form-group">
-              <label class="form-label">التاريخ</label>
-              <input class="form-input" type="date">
-            </div>
-            <div class="form-group">
-              <label class="form-label">ملاحظات (اختياري)</label>
-              <textarea class="form-textarea" placeholder="أي ملاحظات إضافية..."></textarea>
+              <div class="form-label">التاريخ</div>
+              <div class="form-field">
+                <i data-lucide="calendar" style="width:15px;height:15px;color:var(--b400);"></i>
+                <span style="color:#bbb;">01/06/2026</span>
+              </div>
+              <div class="form-label">ملاحظة</div>
+              <div class="form-textarea placeholder">ملاحظات اختيارية...</div>
             </div>
           </div>
           <div class="form-footer">
-            <button class="btn-primary" onclick="showToast('تم حفظ المصروف ✓');goBack()">حفظ</button>
+            <button class="btn-primary">حفظ</button>
             <button class="btn-secondary" onclick="goBack()">إلغاء</button>
           </div>
         </div>
 
-        <!-- S5: Sales -->
+        <!-- ======== S5: SALES ======== -->
         <div class="screen" id="screen-sales">
-          <div class="status-bar">
-            <span class="status-time">9:41</span>
-            <div class="status-icons">
-              <i data-lucide="signal" style="width:14px;height:14px"></i>
-              <i data-lucide="wifi" style="width:14px;height:14px"></i>
-              <i data-lucide="battery" style="width:14px;height:14px"></i>
+          <div class="status-bar dark" style="background:var(--b700);color:#fff;">
+            <span>9:41</span>
+            <div class="status-icons"><i data-lucide="signal"></i><i data-lucide="wifi"></i><i data-lucide="battery-full"></i></div>
+          </div>
+          <div class="app-bar blue">
+            <button class="app-bar-btn" onclick="goBack()"><i data-lucide="chevron-right"></i></button>
+            <span class="app-bar-title">المبيعات</span>
+            <button class="app-bar-btn"><i data-lucide="filter"></i></button>
+          </div>
+          <div class="list-header-bar">
+            <div>
+              <div class="list-total-lbl">إجمالي المبيعات</div>
+              <div class="list-total-val">28,400,000 د.ع</div>
+            </div>
+            <div class="list-count-badge">3 بيعات</div>
+          </div>
+          <div class="screen-scroll" style="padding:10px 0 70px;position:relative;">
+            <div class="sale-card" onclick="navigate('add-payment',{saleId:1})">
+              <div class="sale-card-top">
+                <div class="sale-card-name">بيعة أسماك كبيرة</div>
+                <div class="sale-card-date">01/05/2026</div>
+              </div>
+              <div class="sale-card-amount">5,750,000 د.ع</div>
+              <div class="sale-card-meta">
+                <span>4,000 سمكة</span>
+                <span>•</span>
+                <span>1,150 كغم</span>
+                <span>•</span>
+                <span>5,000 د.ع/كغم</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:13%"></div></div>
+              <div class="sale-paid-row">
+                <span class="sale-paid-label">واصل: 750,000</span>
+                <span class="sale-remain-label">متبقي: 5,000,000</span>
+              </div>
+            </div>
+            <div class="sale-card" onclick="navigate('add-payment',{saleId:2})">
+              <div class="sale-card-top">
+                <div class="sale-card-name">دفعة ربيع</div>
+                <div class="sale-card-date">15/04/2026</div>
+              </div>
+              <div class="sale-card-amount">3,200,000 د.ع</div>
+              <div class="sale-card-meta">
+                <span>2,000 سمكة</span>
+                <span>•</span>
+                <span>600 كغم</span>
+                <span>•</span>
+                <span>5,333 د.ع/كغم</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill full" style="width:100%"></div></div>
+              <div class="sale-card-done"><i data-lucide="check-circle"></i> مدفوع بالكامل</div>
+            </div>
+            <div class="sale-card" onclick="navigate('add-payment',{saleId:3})">
+              <div class="sale-card-top">
+                <div class="sale-card-name">بيعة صغيرة</div>
+                <div class="sale-card-date">10/03/2026</div>
+              </div>
+              <div class="sale-card-amount">1,500,000 د.ع</div>
+              <div class="sale-card-meta">
+                <span>500 سمكة</span>
+                <span>•</span>
+                <span>180 كغم</span>
+                <span>•</span>
+                <span>8,333 د.ع/كغم</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill full" style="width:100%"></div></div>
+              <div class="sale-card-done"><i data-lucide="check-circle"></i> مدفوع بالكامل</div>
             </div>
           </div>
-          <div class="app-header">
-            <button class="back-btn" onclick="goBack()"><i data-lucide="chevron-right"></i></button>
-            <h2>المبيعات</h2>
-            <button class="header-action" onclick="showToast('تصفية المبيعات')"><i data-lucide="filter"></i></button>
-          </div>
-          <div class="list-summary">
-            <div><div class="total-lbl">إجمالي المبيعات</div><div class="total-val">28.4M ج.س</div></div>
-            <div class="count-badge">3 دفعات</div>
-          </div>
-          <div class="screen-body" style="padding:12px;">
-            <div id="salesList"></div>
-          </div>
-          <button class="fab" onclick="navigate('add-sale',{lakeId:state.lakeId})"><i data-lucide="plus"></i></button>
+          <div class="fab" onclick="navigate('add-sale')"><i data-lucide="plus"></i></div>
         </div>
 
-        <!-- S6: Add Payment (Bottom Sheet) -->
+        <!-- ======== S6: ADD PAYMENT ======== -->
         <div class="screen" id="screen-add-payment">
-          <div class="status-bar">
-            <span class="status-time">9:41</span>
-            <div class="status-icons">
-              <i data-lucide="signal" style="width:14px;height:14px"></i>
-              <i data-lucide="wifi" style="width:14px;height:14px"></i>
-              <i data-lucide="battery" style="width:14px;height:14px"></i>
+          <!-- Blurred background -->
+          <div style="position:absolute;inset:0;background:linear-gradient(160deg,var(--b700),var(--b500));opacity:.35;"></div>
+          <div class="payment-sheet">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title">إضافة دفعة — بيعة أسماك كبيرة</div>
+            <div class="payment-hist-item">
+              <span>دفعة مبدئية</span>
+              <span style="color:#aaa;font-size:.7rem;">01/05/2026</span>
+              <span class="payment-hist-amount">750,000 د.ع</span>
             </div>
-          </div>
-          <div class="app-header">
-            <button class="back-btn" onclick="goBack()"><i data-lucide="chevron-right"></i></button>
-            <h2>المبيعات</h2>
-          </div>
-          <div class="list-summary">
-            <div><div class="total-lbl">إجمالي المبيعات</div><div class="total-val">28.4M ج.س</div></div>
-            <div class="count-badge">3 دفعات</div>
-          </div>
-          <div class="screen-body" style="padding:12px;">
-            <div id="salesListBg"></div>
-          </div>
-          <div class="bottom-sheet-overlay">
-            <div class="bottom-sheet">
-              <div class="sheet-handle"></div>
-              <div class="sheet-title">تسجيل دفعة جديدة</div>
-              <div id="sheetSaleInfo"></div>
-              <div class="form-group" style="margin-bottom:10px">
-                <label class="form-label">مبلغ الدفعة (ج.س)</label>
-                <input class="form-input" type="number" placeholder="0">
+            <div class="payment-summary">
+              <div class="pay-sum-card">
+                <div class="pay-sum-val" style="color:var(--ok);">750,000</div>
+                <div class="pay-sum-lbl">واصل</div>
               </div>
-              <div class="form-group" style="margin-bottom:10px">
-                <label class="form-label">التاريخ</label>
-                <input class="form-input" type="date">
+              <div class="pay-sum-card">
+                <div class="pay-sum-val" style="color:var(--danger);">5,000,000</div>
+                <div class="pay-sum-lbl">متبقي</div>
               </div>
-              <div class="form-group" style="margin-bottom:14px">
-                <label class="form-label">ملاحظة</label>
-                <input class="form-input" placeholder="اختياري">
-              </div>
-              <div style="display:flex;gap:8px;">
-                <button class="btn-primary" onclick="showToast('تم تسجيل الدفعة ✓');goBack()">حفظ الدفعة</button>
-                <button class="btn-secondary" onclick="goBack()">إلغاء</button>
-              </div>
+            </div>
+            <div style="padding:0 16px 12px;">
+              <div class="form-label">المبلغ (د.ع)</div>
+              <div class="form-field placeholder">أدخل المبلغ...</div>
+              <div class="form-label">ملاحظة</div>
+              <div class="form-field placeholder">ملاحظة اختيارية...</div>
+            </div>
+            <div class="form-footer">
+              <button class="btn-primary">تسجيل الدفعة</button>
+              <button class="btn-secondary" onclick="goBack()">إلغاء</button>
             </div>
           </div>
         </div>
 
-        <!-- S7: Creditors -->
+        <!-- ======== S7: CREDITORS ======== -->
         <div class="screen" id="screen-creditors">
-          <div class="status-bar">
-            <span class="status-time">9:41</span>
-            <div class="status-icons">
-              <i data-lucide="signal" style="width:14px;height:14px"></i>
-              <i data-lucide="wifi" style="width:14px;height:14px"></i>
-              <i data-lucide="battery" style="width:14px;height:14px"></i>
+          <div class="status-bar dark" style="background:var(--b700);color:#fff;">
+            <span>9:41</span>
+            <div class="status-icons"><i data-lucide="signal"></i><i data-lucide="wifi"></i><i data-lucide="battery-full"></i></div>
+          </div>
+          <div class="app-bar blue">
+            <button class="app-bar-btn" onclick="goBack()"><i data-lucide="chevron-right"></i></button>
+            <span class="app-bar-title">الدائنون</span>
+            <button class="app-bar-btn"><i data-lucide="user-plus"></i></button>
+          </div>
+          <div class="list-header-bar">
+            <div>
+              <div class="list-total-lbl">إجمالي الديون</div>
+              <div class="list-total-val">4,200,000 د.ع</div>
+            </div>
+            <div class="list-count-badge">2 دائنون</div>
+          </div>
+          <div class="screen-scroll" style="padding:0 0 70px;position:relative;">
+            <div class="person-card">
+              <div class="person-top">
+                <div class="person-avatar avatar-warn">أع</div>
+                <div>
+                  <div class="person-name">أحمد العلي</div>
+                  <div class="person-type">علف أسماك</div>
+                </div>
+                <div class="person-amount" style="color:var(--warn);">2,500,000 د.ع</div>
+              </div>
+              <div class="progress-wrap">
+                <div class="progress-lbl-row">
+                  <span style="color:var(--ok);">واصل: 1,000,000</span>
+                  <span>متبقي: 1,500,000</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
+              </div>
+            </div>
+            <div class="person-card">
+              <div class="person-top">
+                <div class="person-avatar avatar-blue">مص</div>
+                <div>
+                  <div class="person-name">محمد صالح</div>
+                  <div class="person-type">قطع غيار</div>
+                </div>
+                <div class="person-amount" style="color:var(--warn);">1,700,000 د.ع</div>
+              </div>
+              <div class="progress-wrap">
+                <div class="progress-lbl-row">
+                  <span style="color:var(--ok);">واصل: 700,000</span>
+                  <span>متبقي: 1,000,000</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:41%"></div></div>
+              </div>
             </div>
           </div>
-          <div class="app-header">
-            <button class="back-btn" onclick="goBack()"><i data-lucide="chevron-right"></i></button>
-            <h2>الدائنون</h2>
-          </div>
-          <div class="list-summary" style="background:linear-gradient(135deg,#1a3a8a,#2155c8)">
-            <div><div class="total-lbl">إجمالي الديون عليّ</div><div class="total-val">4.2M ج.س</div></div>
-            <div class="count-badge">2 أشخاص</div>
-          </div>
-          <div class="screen-body" style="padding:12px;">
-            <div id="creditorsList"></div>
-          </div>
-          <button class="fab" onclick="showToast('إضافة دائن جديد')"><i data-lucide="plus"></i></button>
+          <div class="fab"><i data-lucide="plus"></i></div>
         </div>
 
-        <!-- S8: Debtors -->
+        <!-- ======== S8: DEBTORS ======== -->
         <div class="screen" id="screen-debtors">
-          <div class="status-bar">
-            <span class="status-time">9:41</span>
-            <div class="status-icons">
-              <i data-lucide="signal" style="width:14px;height:14px"></i>
-              <i data-lucide="wifi" style="width:14px;height:14px"></i>
-              <i data-lucide="battery" style="width:14px;height:14px"></i>
+          <div class="status-bar dark" style="background:var(--b700);color:#fff;">
+            <span>9:41</span>
+            <div class="status-icons"><i data-lucide="signal"></i><i data-lucide="wifi"></i><i data-lucide="battery-full"></i></div>
+          </div>
+          <div class="app-bar blue">
+            <button class="app-bar-btn" onclick="goBack()"><i data-lucide="chevron-right"></i></button>
+            <span class="app-bar-title">المدينون</span>
+            <button class="app-bar-btn"><i data-lucide="user-plus"></i></button>
+          </div>
+          <div class="list-header-bar">
+            <div>
+              <div class="list-total-lbl">إجمالي المديونية</div>
+              <div class="list-total-val">3,100,000 د.ع</div>
+            </div>
+            <div class="list-count-badge">2 مدينون</div>
+          </div>
+          <div class="screen-scroll" style="padding:0 0 70px;position:relative;">
+            <div class="person-card">
+              <div class="person-top">
+                <div class="person-avatar avatar-blue">سح</div>
+                <div>
+                  <div class="person-name">سامي الحسن</div>
+                  <div class="person-type">دين نقدي</div>
+                </div>
+                <div class="person-amount" style="color:var(--b600);">1,800,000 د.ع</div>
+              </div>
+              <div class="progress-wrap">
+                <div class="progress-lbl-row">
+                  <span style="color:var(--ok);">واصل: 1,300,000</span>
+                  <span>متبقي: 500,000</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:72%"></div></div>
+              </div>
+            </div>
+            <div class="person-card">
+              <div class="person-top">
+                <div class="person-avatar avatar-warn">كإ</div>
+                <div>
+                  <div class="person-name">كامل إبراهيم</div>
+                  <div class="person-type">أسماك مباعة</div>
+                </div>
+                <div class="person-amount" style="color:var(--b600);">1,300,000 د.ع</div>
+              </div>
+              <div class="progress-wrap">
+                <div class="progress-lbl-row">
+                  <span style="color:#aaa;">واصل: 0</span>
+                  <span>متبقي: 1,300,000</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill red" style="width:0%"></div></div>
+              </div>
             </div>
           </div>
-          <div class="app-header">
-            <button class="back-btn" onclick="goBack()"><i data-lucide="chevron-right"></i></button>
-            <h2>المدينون</h2>
-          </div>
-          <div class="list-summary" style="background:linear-gradient(135deg,#7a4200,#b86a00)">
-            <div><div class="total-lbl">إجمالي الديون لي</div><div class="total-val">3.1M ج.س</div></div>
-            <div class="count-badge">2 أشخاص</div>
-          </div>
-          <div class="screen-body" style="padding:12px;">
-            <div id="debtorsList"></div>
-          </div>
-          <button class="fab" onclick="showToast('إضافة مدين جديد')"><i data-lucide="plus"></i></button>
+          <div class="fab"><i data-lucide="plus"></i></div>
         </div>
 
-        <!-- S9: Add Sale -->
-        <div class="screen" id="screen-add-sale">
-          <div class="status-bar">
-            <span class="status-time">9:41</span>
-            <div class="status-icons">
-              <i data-lucide="signal" style="width:14px;height:14px"></i>
-              <i data-lucide="wifi" style="width:14px;height:14px"></i>
-              <i data-lucide="battery" style="width:14px;height:14px"></i>
-            </div>
+        <!-- ======== S9: ADD SALE ======== -->
+        <div class="screen form-screen" id="screen-add-sale">
+          <div class="status-bar dark" style="background:var(--b700);color:#fff;">
+            <span>9:41</span>
+            <div class="status-icons"><i data-lucide="signal"></i><i data-lucide="wifi"></i><i data-lucide="battery-full"></i></div>
           </div>
-          <div class="app-header">
-            <button class="back-btn" onclick="goBack()"><i data-lucide="chevron-right"></i></button>
-            <h2>إضافة بيعة</h2>
+          <div class="app-bar blue">
+            <button class="app-bar-btn" onclick="goBack()"><i data-lucide="chevron-right"></i></button>
+            <span class="app-bar-title">إضافة بيعة</span>
+            <div style="width:34px;"></div>
           </div>
-          <div class="form-body">
-            <div class="form-group">
-              <label class="form-label">عنوان البيعة</label>
-              <input class="form-input" placeholder="مثال: دفعة أسماك كبيرة">
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">عدد الأسماك</label>
-                <input class="form-input" type="number" placeholder="0">
+          <div class="screen-scroll">
+            <div class="form-section">
+              <div class="form-label">التاريخ</div>
+              <div class="form-field">
+                <i data-lucide="calendar" style="width:15px;height:15px;color:var(--b400);"></i>
+                <span style="color:#bbb;">01/06/2026</span>
               </div>
-              <div class="form-group">
-                <label class="form-label">الوزن (كجم)</label>
-                <input class="form-input" type="number" placeholder="0">
+              <div class="form-label">الوزن الكلي وعدد الأسماك</div>
+              <div class="form-field-row">
+                <div class="form-field placeholder">الوزن (كغم)</div>
+                <div class="form-field placeholder">العدد</div>
               </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">السعر للكيلو (ج.س)</label>
-                <input class="form-input" type="number" placeholder="0">
+              <div class="form-label">سعر الفرد (د.ع)</div>
+              <div class="form-field placeholder">0</div>
+              <div class="form-calc-box">
+                <div class="form-calc-lbl">إجمالي البيعة</div>
+                <div class="form-calc-val">0 د.ع</div>
               </div>
-              <div class="form-group">
-                <label class="form-label">الإجمالي</label>
-                <input class="form-input" placeholder="0" readonly style="background:var(--b050)">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="form-label">تاريخ البيع</label>
-              <input class="form-input" type="date">
-            </div>
-            <div class="form-group">
-              <label class="form-label">دفعة أولى (اختياري)</label>
-              <input class="form-input" type="number" placeholder="0">
-            </div>
-            <div class="form-group">
-              <label class="form-label">ملاحظات</label>
-              <textarea class="form-textarea" placeholder="أي ملاحظات..."></textarea>
+              <div class="form-label">ملاحظة</div>
+              <div class="form-textarea placeholder">ملاحظات اختيارية...</div>
             </div>
           </div>
           <div class="form-footer">
-            <button class="btn-primary" onclick="showToast('تم حفظ البيعة ✓');goBack()">حفظ</button>
+            <button class="btn-primary">حفظ البيعة</button>
             <button class="btn-secondary" onclick="goBack()">إلغاء</button>
           </div>
         </div>
 
       </div><!-- /phone-screen -->
     </div><!-- /phone-shell -->
-  </div><!-- /phone-area -->
-</div><!-- /main-layout -->
 
-<!-- SHOWCASE SECTION -->
-<div class="showcase-section">
-  <div class="showcase-title">
-    <i data-lucide="grid-3x3" style="width:20px;height:20px;color:var(--b600)"></i>
-    عرض جميع الشاشات
+    <button class="arrow-btn" onclick="nextScreen()" title="التالي">
+      <i data-lucide="chevron-left"></i>
+    </button>
+  </div><!-- /phone-row -->
+
+  <!-- Screen Meta -->
+  <div class="screen-meta">
+    <div class="screen-pill" id="screenPill">قائمة البحيرات</div>
+    <div class="dots-row" id="dotsRow"></div>
+    <div class="edit-hint">
+      <i data-lucide="pencil"></i>
+      انقر أي أيقونة لتغييرها
+    </div>
   </div>
-  <div class="showcase-grid" id="showcaseGrid"></div>
+
+</main><!-- /hero-area -->
+
+<!-- ============================
+     SHOWCASE SECTION
+     ============================ -->
+<section class="showcase-section" id="showcaseSection">
+  <div class="showcase-divider">عرض جميع الشاشات</div>
+  <div class="showcase-grid" id="showcaseGrid">
+    <!-- Injected by buildShowcase() -->
+  </div>
+</section>
+
+<!-- ============================
+     ICON PICKER OVERLAY
+     ============================ -->
+<div class="picker-overlay" id="pickerOverlay" onclick="handleOverlayClick(event)">
+  <div class="picker-sheet">
+    <div class="picker-handle"></div>
+    <div class="picker-title">اختر أيقونة</div>
+    <div class="picker-tabs" id="pickerTabs">
+      <button class="picker-tab active" data-tab="all" onclick="switchTab('all')">الكل</button>
+      <button class="picker-tab" data-tab="nature" onclick="switchTab('nature')">طبيعة</button>
+      <button class="picker-tab" data-tab="animals" onclick="switchTab('animals')">حيوانات</button>
+      <button class="picker-tab" data-tab="finance" onclick="switchTab('finance')">مالية</button>
+      <button class="picker-tab" data-tab="tools" onclick="switchTab('tools')">أدوات</button>
+      <button class="picker-tab" data-tab="emoji" onclick="switchTab('emoji')">إيموجي</button>
+    </div>
+    <div class="picker-grid" id="pickerGrid"></div>
+    <div class="picker-footer">
+      <button class="btn-primary" onclick="confirmPick()">تأكيد الاختيار</button>
+      <button class="btn-secondary" onclick="closePicker()">إلغاء</button>
+    </div>
+  </div>
 </div>
 
-<script>
-// ============================================================
-// APP STATE
-// ============================================================
-const state = {
-  screen: 'lakes-list',
-  lakeId: null,
-  saleId: null,
-  navStack: [],
-  icons: {
-    lake_1: { n: 'waves', type: 'lucide' },
-    lake_2: { n: 'fish', type: 'lucide' },
-    lake_3: { n: 'leaf', type: 'lucide' },
-    sec_expenses: { n: 'trending-down', type: 'lucide' },
-    sec_sales: { n: 'fish', type: 'lucide' },
-    sec_creditor: { n: 'handshake', type: 'lucide' },
-    sec_debtor: { n: 'receipt', type: 'lucide' },
-  },
-  lakes: [
-    { id: 1, name: 'بحيرة الشمال', lastUpdate: 'اليوم',
-      expenses: { count: 5, total: 12500000 }, sales: { count: 3, total: 28400000 },
-      creditor: { count: 2, total: 4200000 }, debtor: { count: 2, total: 3100000 } },
-    { id: 2, name: 'بحيرة الجنوب', lastUpdate: 'أمس',
-      expenses: { count: 7, total: 8300000 }, sales: { count: 4, total: 19600000 },
-      creditor: { count: 0, total: 0 }, debtor: { count: 1, total: 1200000 } },
-    { id: 3, name: 'بحيرة العائلة', lastUpdate: '3 أيام',
-      expenses: { count: 2, total: 2100000 }, sales: { count: 0, total: 0 },
-      creditor: { count: 0, total: 0 }, debtor: { count: 0, total: 0 } },
-  ],
-  expenseItems: [
-    { id:1, name:'علف أسماك', qty:5, unit:'طن', price:1000000, total:5000000, date:'01/05/2026', note:'علف فترة النمو الأولى', icon:'wheat' },
-    { id:2, name:'أدوية ومضادات', qty:3, unit:'عبوة', price:250000, total:750000, date:'15/04/2026', note:'', icon:'pill' },
-    { id:3, name:'صيانة مضخة', qty:1, unit:'خدمة', price:350000, total:350000, date:'10/04/2026', note:'تغيير إمبيلر المضخة الرئيسية', icon:'wrench' },
-    { id:4, name:'أجور عمال', qty:4, unit:'شخص', price:750000, total:3000000, date:'30/04/2026', note:'', icon:'users' },
-    { id:5, name:'وقود مولد', qty:200, unit:'لتر', price:1000, total:200000, date:'28/04/2026', note:'', icon:'fuel' },
-  ],
-  salesItems: [
-    { id:1, title:'دفعة أسماك كبيرة', date:'01/05/2026', count:4000, weight:1150, pricePerUnit:5000, total:5750000,
-      payments:[{date:'20/04/2026', amount:750000, note:'دفعة أولى'}] },
-    { id:2, title:'دفعة أسماك متوسطة', date:'20/04/2026', count:2000, weight:600, pricePerUnit:1600, total:3200000,
-      payments:[{date:'22/04/2026', amount:2000000, note:''},{date:'28/04/2026', amount:1200000, note:''}] },
-    { id:3, title:'بيع تجزئة سوق', date:'10/04/2026', count:500, weight:180, pricePerUnit:3000, total:1500000,
-      payments:[{date:'10/04/2026', amount:1500000, note:'نقداً'}] },
-  ],
-  creditorItems: [
-    { id:1, name:'أحمد العلي', initials:'أح', type:'علف', date:'15/04/2026', total:2500000,
-      payments:[{date:'20/04/2026', amount:1000000}] },
-    { id:2, name:'محمد صالح', initials:'مح', type:'قطع غيار', date:'10/04/2026', total:1700000,
-      payments:[{date:'15/04/2026', amount:700000}] },
-  ],
-  debtorItems: [
-    { id:1, name:'سامي الحسن', initials:'سا', type:'دين نقدي', date:'05/04/2026', total:1800000,
-      payments:[{date:'12/04/2026', amount:500000},{date:'20/04/2026', amount:800000}] },
-    { id:2, name:'كامل إبراهيم', initials:'كا', type:'أسماك مباعة', date:'01/04/2026', total:1300000,
-      payments:[] },
-  ],
-  selectedSaleId: null,
-};
+<!-- ============================
+     TOAST
+     ============================ -->
+<div class="toast" id="toast"></div>
 
-// ============================================================
-// ICON LIBRARY
-// ============================================================
+<!-- ============================
+     JAVASCRIPT
+     ============================ -->
+<script>
+/* ==============================
+   ICON DATA
+   ============================== */
 const ICONS = {
-  nature: [
-    {n:'waves',ar:'أمواج'},{n:'droplets',ar:'قطرات ماء'},{n:'leaf',ar:'ورقة'},
-    {n:'tree-pine',ar:'صنوبر'},{n:'mountain',ar:'جبل'},{n:'mountain-snow',ar:'جبل ثلجي'},
-    {n:'sun',ar:'شمس'},{n:'moon',ar:'قمر'},{n:'cloud',ar:'سحابة'},
-    {n:'cloud-rain',ar:'مطر'},{n:'wind',ar:'ريح'},{n:'snowflake',ar:'ثلج'},
-    {n:'flame',ar:'لهب'},{n:'flower-2',ar:'زهرة'},{n:'sprout',ar:'نبتة'},
-    {n:'trees',ar:'أشجار'},{n:'sunset',ar:'غروب'}
+  nature:[
+    {n:'waves',ar:'أمواج'},{n:'droplets',ar:'قطرات'},{n:'leaf',ar:'ورقة'},
+    {n:'tree-pine',ar:'صنوبر'},{n:'mountain',ar:'جبل'},{n:'sun',ar:'شمس'},
+    {n:'moon',ar:'قمر'},{n:'cloud',ar:'سحابة'},{n:'wind',ar:'ريح'},
+    {n:'snowflake',ar:'ثلج'},{n:'flame',ar:'لهب'},{n:'sprout',ar:'نبتة'},
+    {n:'flower-2',ar:'زهرة'},{n:'trees',ar:'أشجار'},{n:'cloud-rain',ar:'مطر'},
   ],
-  animals: [
+  animals:[
     {n:'fish',ar:'سمكة'},{n:'fish-2',ar:'سمكة ٢'},{n:'bird',ar:'طائر'},
     {n:'bug',ar:'حشرة'},{n:'rabbit',ar:'أرنب'},{n:'turtle',ar:'سلحفاة'},
-    {n:'squirrel',ar:'سنجاب'},{n:'snail',ar:'حلزون'},{n:'rat',ar:'فأر'},
-    {n:'crab',ar:'سرطان البحر'},{n:'shell',ar:'محارة'}
+    {n:'squirrel',ar:'سنجاب'},{n:'snail',ar:'حلزون'},{n:'crab',ar:'سرطان'},
   ],
-  finance: [
+  finance:[
     {n:'banknote',ar:'ورقة نقدية'},{n:'wallet',ar:'محفظة'},{n:'credit-card',ar:'بطاقة'},
     {n:'receipt',ar:'إيصال'},{n:'trending-down',ar:'تراجع'},{n:'trending-up',ar:'صعود'},
     {n:'bar-chart-2',ar:'إحصاء'},{n:'pie-chart',ar:'دائري'},{n:'coins',ar:'عملات'},
-    {n:'shopping-bag',ar:'مشتريات'},{n:'shopping-cart',ar:'سلة'},{n:'store',ar:'متجر'},
-    {n:'handshake',ar:'مصافحة'},{n:'calculator',ar:'حاسبة'},{n:'scale',ar:'ميزان'},
-    {n:'package',ar:'طرد'},{n:'package-open',ar:'صندوق مفتوح'},{n:'box',ar:'صندوق'},
-    {n:'tag',ar:'وسم'},{n:'percent',ar:'نسبة مئوية'},{n:'dollar-sign',ar:'دولار'},
-    {n:'landmark',ar:'بنك'},{n:'piggy-bank',ar:'حصالة'}
+    {n:'shopping-bag',ar:'مشتريات'},{n:'handshake',ar:'مصافحة'},{n:'calculator',ar:'حاسبة'},
+    {n:'scale',ar:'ميزان'},{n:'package',ar:'طرد'},{n:'tag',ar:'وسم'},
+    {n:'landmark',ar:'بنك'},{n:'piggy-bank',ar:'حصالة'},{n:'percent',ar:'نسبة'},
   ],
-  tools: [
-    {n:'settings',ar:'إعدادات'},{n:'wrench',ar:'مفتاح ربط'},{n:'hammer',ar:'مطرقة'},
-    {n:'cpu',ar:'معالج'},{n:'database',ar:'قاعدة بيانات'},{n:'shield',ar:'حماية'},
-    {n:'lock',ar:'قفل'},{n:'key',ar:'مفتاح'},{n:'anchor',ar:'مرساة'},
-    {n:'compass',ar:'بوصلة'},{n:'map',ar:'خريطة'},{n:'map-pin',ar:'دبوس'},
+  tools:[
+    {n:'settings',ar:'إعدادات'},{n:'wrench',ar:'مفتاح'},{n:'hammer',ar:'مطرقة'},
+    {n:'shield',ar:'حماية'},{n:'lock',ar:'قفل'},{n:'key',ar:'مفتاح'},
+    {n:'anchor',ar:'مرساة'},{n:'compass',ar:'بوصلة'},{n:'map-pin',ar:'موقع'},
     {n:'truck',ar:'شاحنة'},{n:'ship',ar:'سفينة'},{n:'tractor',ar:'جرار'},
     {n:'building',ar:'مبنى'},{n:'factory',ar:'مصنع'},{n:'home',ar:'منزل'},
     {n:'user',ar:'مستخدم'},{n:'users',ar:'مجموعة'},{n:'star',ar:'نجمة'},
-    {n:'heart',ar:'قلب'},{n:'award',ar:'جائزة'},{n:'trophy',ar:'كأس'},
-    {n:'flag',ar:'علم'},{n:'gift',ar:'هدية'},{n:'zap',ar:'برق'},
-    {n:'layers',ar:'طبقات'},{n:'grid',ar:'شبكة'},{n:'fuel',ar:'وقود'},
-    {n:'pill',ar:'دواء'},{n:'wheat',ar:'قمح'},{n:'droplet',ar:'قطرة'},
-    {n:'thermometer',ar:'حرارة'},{n:'microscope',ar:'مجهر'},{n:'eye',ar:'عين'},
-    {n:'crosshair',ar:'تصويب'},{n:'target',ar:'هدف'}
+    {n:'heart',ar:'قلب'},{n:'award',ar:'جائزة'},{n:'fuel',ar:'وقود'},
+    {n:'pill',ar:'دواء'},{n:'wheat',ar:'قمح'},{n:'zap',ar:'برق'},
+    {n:'target',ar:'هدف'},{n:'flag',ar:'علم'},{n:'gift',ar:'هدية'},
   ],
-  emoji: [
-    {n:'🏞️',ar:'منظر طبيعي',e:true},{n:'🌊',ar:'موجة',e:true},{n:'🐟',ar:'سمكة',e:true},
-    {n:'🐠',ar:'سمكة ملونة',e:true},{n:'🐡',ar:'سمكة مرقطة',e:true},{n:'🦈',ar:'قرش',e:true},
-    {n:'🎣',ar:'صيد سمك',e:true},{n:'💧',ar:'قطرة',e:true},{n:'🌿',ar:'ورقة',e:true},
+  emoji:[
+    {n:'🏞️',ar:'منظر',e:true},{n:'🌊',ar:'موجة',e:true},{n:'🐟',ar:'سمكة',e:true},
+    {n:'🐠',ar:'ملونة',e:true},{n:'🐡',ar:'مرقطة',e:true},{n:'🦈',ar:'قرش',e:true},
+    {n:'🎣',ar:'صيد',e:true},{n:'💧',ar:'قطرة',e:true},{n:'🌿',ar:'ورقة',e:true},
     {n:'🌾',ar:'علف',e:true},{n:'🌲',ar:'شجرة',e:true},{n:'🏔️',ar:'جبل',e:true},
     {n:'☀️',ar:'شمس',e:true},{n:'🌙',ar:'قمر',e:true},{n:'⭐',ar:'نجمة',e:true},
-    {n:'💰',ar:'أموال',e:true},{n:'💵',ar:'دولار',e:true},{n:'💳',ar:'بطاقة',e:true},
-    {n:'🤝',ar:'مصافحة',e:true},{n:'📋',ar:'قائمة',e:true},{n:'📊',ar:'مخطط',e:true},
-    {n:'💸',ar:'صرف',e:true},{n:'⚙️',ar:'تروس',e:true},{n:'🔧',ar:'مفتاح',e:true},
-    {n:'💊',ar:'دواء',e:true},{n:'🌱',ar:'نبتة',e:true},{n:'🏡',ar:'منزل',e:true},
-    {n:'🚜',ar:'جرار',e:true},{n:'⛵',ar:'قارب',e:true},{n:'🚢',ar:'سفينة',e:true},
-    {n:'🏆',ar:'كأس',e:true},{n:'❤️',ar:'قلب',e:true},{n:'⚡',ar:'برق',e:true},
-    {n:'🔑',ar:'مفتاح',e:true},{n:'📦',ar:'صندوق',e:true},{n:'🧪',ar:'كيمياء',e:true},
+    {n:'💰',ar:'مال',e:true},{n:'💳',ar:'بطاقة',e:true},{n:'🤝',ar:'مصافحة',e:true},
+    {n:'📋',ar:'قائمة',e:true},{n:'💸',ar:'صرف',e:true},{n:'⚙️',ar:'تروس',e:true},
+    {n:'🔧',ar:'مفتاح',e:true},{n:'💊',ar:'دواء',e:true},{n:'🚜',ar:'جرار',e:true},
+    {n:'⛵',ar:'قارب',e:true},{n:'🚢',ar:'سفينة',e:true},{n:'🏆',ar:'كأس',e:true},
+    {n:'❤️',ar:'قلب',e:true},{n:'⚡',ar:'برق',e:true},{n:'🔑',ar:'مفتاح',e:true},
   ]
 };
+const ALL_ICONS = [...ICONS.nature,...ICONS.animals,...ICONS.finance,...ICONS.tools,...ICONS.emoji];
 
-// ============================================================
-// HELPERS
-// ============================================================
-function fmt(n) {
-  if (!n && n !== 0) return '0';
-  if (n >= 1000000) return (n / 1000000).toFixed(1).replace('.0','') + 'M';
-  if (n >= 1000) return (n / 1000).toFixed(0) + 'K';
-  return n.toLocaleString();
-}
+/* ==============================
+   STATE
+   ============================== */
+const state = {
+  screen:'lakes-list',
+  lakeId:1,
+  saleId:1,
+  navStack:[],
+  navOrder:['lakes-list','lake-dashboard','expenses','add-expense','sales','add-payment','creditors','debtors','add-sale'],
+  icons:{
+    lake_1:{n:'waves',e:false},
+    lake_2:{n:'fish',e:false},
+    lake_3:{n:'leaf',e:false},
+    sec_expenses:{n:'trending-down',e:false},
+    sec_sales:{n:'fish',e:false},
+    sec_creditor:{n:'handshake',e:false},
+    sec_debtor:{n:'receipt',e:false},
+  }
+};
 
-function renderIcon(iconId, size=20, cls='') {
+const SCREEN_LABELS = {
+  'lakes-list':'قائمة البحيرات',
+  'lake-dashboard':'لوحة البحيرة',
+  'expenses':'المصروفات',
+  'add-expense':'إضافة مصروف',
+  'sales':'المبيعات',
+  'add-payment':'إضافة دفعة',
+  'creditors':'الدائنون',
+  'debtors':'المدينون',
+  'add-sale':'إضافة بيعة',
+};
+
+const LAKE_DATA = [
+  {id:1,name:'بحيرة النور',date:'اليوم',expenses:'12.5M',sales:'28.4M',net:'+15.9M',netType:'green',expCount:5,saleCount:3},
+  {id:2,name:'بحيرة الأمل',date:'أمس',expenses:'6.8M',sales:'18.2M',net:'+11.4M',netType:'green',expCount:4,saleCount:2},
+  {id:3,name:'بحيرة الخضراء',date:'منذ ٣ أيام',expenses:'3.6M',sales:'8.2M',net:'+4.6M',netType:'green',expCount:3,saleCount:1},
+];
+
+/* ==============================
+   RENDER HELPERS
+   ============================== */
+function renderIcon(iconId){
   const ic = state.icons[iconId];
-  if (!ic) return '';
-  if (ic.type === 'emoji') {
-    return `<span class="emoji-icon" style="font-size:${size}px;line-height:1">${ic.n}</span>`;
-  }
-  return `<i data-lucide="${ic.n}" style="width:${size}px;height:${size}px" class="${cls}"></i>`;
+  if(!ic) return '';
+  if(ic.e) return `<span class="e-icon" style="font-size:1.25em;line-height:1;">${ic.n}</span>`;
+  return `<i data-lucide="${ic.n}"></i>`;
 }
 
-function paidSum(payments) {
-  return (payments || []).reduce((s, p) => s + p.amount, 0);
-}
-
-function pct(paid, total) {
-  if (!total) return 0;
-  return Math.min(100, Math.round((paid / total) * 100));
-}
-
-// ============================================================
-// NAVIGATION
-// ============================================================
-function navigate(screen, params={}) {
-  state.navStack.push({ screen: state.screen, lakeId: state.lakeId, saleId: state.saleId });
-  state.screen = screen;
-  if (params.lakeId !== undefined) state.lakeId = params.lakeId;
-  if (params.saleId !== undefined) state.saleId = params.saleId;
-  showScreen(screen);
-  updateNavPanel();
-  renderShowcase();
-}
-
-function goBack() {
-  if (state.navStack.length === 0) return;
-  const prev = state.navStack.pop();
-  state.screen = prev.screen;
-  state.lakeId = prev.lakeId;
-  state.saleId = prev.saleId;
-  showScreen(state.screen);
-  updateNavPanel();
-  renderShowcase();
-}
-
-function showScreen(name) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  const el = document.getElementById('screen-' + name);
-  if (el) el.classList.add('active');
-  renderScreenContent(name);
-  setTimeout(() => { lucide.createIcons(); }, 10);
-  updateIconControls();
-}
-
-// ============================================================
-// SCREEN RENDERERS
-// ============================================================
-function renderScreenContent(name) {
-  switch(name) {
-    case 'lakes-list': renderLakesList(); break;
-    case 'lake-dashboard': renderDashboard(); break;
-    case 'expenses': renderExpenses(); break;
-    case 'sales': renderSales(false); break;
-    case 'add-payment': renderSales(true); renderSheetInfo(); break;
-    case 'creditors': renderCreditors(); break;
-    case 'debtors': renderDebtors(); break;
-  }
-}
-
-function renderLakesList() {
-  const el = document.getElementById('lakesList');
-  if (!el) return;
-  el.innerHTML = state.lakes.map(lake => {
-    const ic = state.icons['lake_' + lake.id];
-    const iconHtml = renderIcon('lake_' + lake.id, 22);
-    return `
-    <div class="lake-card" onclick="navigate('lake-dashboard',{lakeId:${lake.id}})">
-      <div class="lake-icon-wrap" onclick="event.stopPropagation();openIconPicker('lake_${lake.id}')">
-        ${iconHtml}
+function buildLakeCard(lake){
+  const iconId = `lake_${lake.id}`;
+  return `
+  <div class="lake-card" onclick="navigate('lake-dashboard',{lakeId:${lake.id}})">
+    <div class="lake-card-top">
+      <div class="lake-icon-wrap" id="lakeIconWrap_${lake.id}" onclick="event.stopPropagation();openPicker('${iconId}')">
+        ${renderIcon(iconId)}
         <div class="edit-badge"><i data-lucide="pencil"></i></div>
       </div>
-      <div class="lake-info">
-        <div class="lake-name">${lake.name}</div>
-        <div class="lake-meta">آخر تحديث: ${lake.lastUpdate}</div>
-        <div class="lake-chips">
-          <span class="chip chip-exp">مصروفات ${fmt(lake.expenses.total)}</span>
-          <span class="chip chip-sale">مبيعات ${fmt(lake.sales.total)}</span>
-        </div>
+      <div class="lake-card-info">
+        <div class="lake-card-name">${lake.name}</div>
+        <div class="lake-card-date">آخر تحديث: ${lake.date}</div>
       </div>
-      <div class="lake-arrow"><i data-lucide="chevron-left"></i></div>
-    </div>`;
-  }).join('');
+    </div>
+    <div class="lake-card-chips">
+      <span class="chip chip-blue">${lake.expCount} مصروفات</span>
+      <span class="chip chip-blue">${lake.saleCount} بيعات</span>
+      <span class="chip ${lake.netType === 'green' ? 'chip-green' : 'chip-red'}">${lake.net}</span>
+    </div>
+  </div>`;
 }
 
-function renderDashboard() {
-  const lake = state.lakes.find(l => l.id === state.lakeId) || state.lakes[0];
-  if (!lake) return;
-  const nameEl = document.getElementById('dashLakeName');
-  if (nameEl) nameEl.textContent = lake.name;
-
-  const summary = document.getElementById('lakeSummary');
-  if (summary) {
-    summary.innerHTML = `
-      <div class="lake-title">
-        <div class="icon-wrap" onclick="openIconPicker('lake_${lake.id}')">
-          ${renderIcon('lake_' + lake.id, 20)}
-          <div class="edit-badge" style="position:absolute;bottom:-4px;left:-4px;width:14px;height:14px;background:var(--b300);border-radius:50%;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.4)"><i data-lucide="pencil" style="width:7px;height:7px;color:#fff"></i></div>
-        </div>
-        ${lake.name}
-      </div>
-      <div class="summary-grid">
-        <div class="summary-box"><div class="s-label">المصروفات</div><div class="s-val">${fmt(lake.expenses.total)} ج.س</div><div class="s-count">${lake.expenses.count} بنود</div></div>
-        <div class="summary-box"><div class="s-label">المبيعات</div><div class="s-val">${fmt(lake.sales.total)} ج.س</div><div class="s-count">${lake.sales.count} دفعات</div></div>
-        <div class="summary-box"><div class="s-label">دائنون</div><div class="s-val">${fmt(lake.creditor.total)} ج.س</div><div class="s-count">${lake.creditor.count} أشخاص</div></div>
-        <div class="summary-box"><div class="s-label">مدينون</div><div class="s-val">${fmt(lake.debtor.total)} ج.س</div><div class="s-count">${lake.debtor.count} أشخاص</div></div>
-      </div>`;
+function renderAllDynamic(){
+  // S1 lake cards
+  const ll = document.getElementById('lakesList');
+  if(ll){
+    ll.innerHTML = LAKE_DATA.map(buildLakeCard).join('') +
+    `<div class="add-lake-btn"><i data-lucide="plus-circle"></i> إضافة بحيرة</div>`;
   }
 
-  const grid = document.getElementById('sectionGrid');
-  if (grid) {
-    grid.innerHTML = `
-      <button class="sec-btn" onclick="navigate('expenses',{lakeId:${lake.id}})">
-        <div class="sec-icon expenses" style="position:relative">
-          ${renderIcon('sec_expenses', 22)}
-          <div class="edit-badge" onclick="event.stopPropagation();openIconPicker('sec_expenses')"><i data-lucide="pencil"></i></div>
-        </div>
-        <div class="sec-title">المصروفات</div>
-        <div class="sec-amount">${fmt(lake.expenses.total)}</div>
-        <div class="sec-count">${lake.expenses.count} بنود</div>
-      </button>
-      <button class="sec-btn" onclick="navigate('sales',{lakeId:${lake.id}})">
-        <div class="sec-icon sales" style="position:relative">
-          ${renderIcon('sec_sales', 22)}
-          <div class="edit-badge" onclick="event.stopPropagation();openIconPicker('sec_sales')"><i data-lucide="pencil"></i></div>
-        </div>
-        <div class="sec-title">المبيعات</div>
-        <div class="sec-amount">${fmt(lake.sales.total)}</div>
-        <div class="sec-count">${lake.sales.count} دفعات</div>
-      </button>
-      <button class="sec-btn" onclick="navigate('creditors',{lakeId:${lake.id}})">
-        <div class="sec-icon creditor" style="position:relative">
-          ${renderIcon('sec_creditor', 22)}
-          <div class="edit-badge" onclick="event.stopPropagation();openIconPicker('sec_creditor')"><i data-lucide="pencil"></i></div>
-        </div>
-        <div class="sec-title">الدائنون</div>
-        <div class="sec-amount">${fmt(lake.creditor.total)}</div>
-        <div class="sec-count">${lake.creditor.count} أشخاص</div>
-      </button>
-      <button class="sec-btn" onclick="navigate('debtors',{lakeId:${lake.id}})">
-        <div class="sec-icon debtor" style="position:relative">
-          ${renderIcon('sec_debtor', 22)}
-          <div class="edit-badge" onclick="event.stopPropagation();openIconPicker('sec_debtor')"><i data-lucide="pencil"></i></div>
-        </div>
-        <div class="sec-title">المدينون</div>
-        <div class="sec-amount">${fmt(lake.debtor.total)}</div>
-        <div class="sec-count">${lake.debtor.count} أشخاص</div>
-      </button>`;
-  }
-}
-
-function renderExpenses() {
-  const el = document.getElementById('expensesList');
-  if (!el) return;
-  el.innerHTML = state.expenseItems.map(item => `
-    <div class="expense-item">
-      <div class="expense-icon"><i data-lucide="${item.icon}" style="width:18px;height:18px;color:var(--b500)"></i></div>
-      <div class="expense-info">
-        <div class="expense-name">${item.name}</div>
-        <div class="expense-detail">${item.qty} ${item.unit} × ${fmt(item.price)} ج.س</div>
-        ${item.note ? `<div class="expense-detail" style="color:var(--b400);margin-top:2px">${item.note}</div>` : ''}
-      </div>
-      <div class="expense-amount">
-        <span class="amt">${fmt(item.total)}</span>
-        <span class="date">${item.date}</span>
-      </div>
-    </div>`).join('');
-}
-
-function renderSales(forBg) {
-  const elId = forBg ? 'salesListBg' : 'salesList';
-  const el = document.getElementById(elId);
-  if (!el) return;
-  el.innerHTML = state.salesItems.map(sale => {
-    const paid = paidSum(sale.payments);
-    const p = pct(paid, sale.total);
-    const remaining = sale.total - paid;
-    return `
-    <div class="sale-item" onclick="${forBg ? '' : `navigate('add-payment',{lakeId:state.lakeId,saleId:${sale.id}})`}">
-      <div class="sale-header">
-        <div><div class="sale-title">${sale.title}</div><div class="sale-date">${sale.date}</div></div>
-        <div class="sale-total">${fmt(sale.total)}</div>
-      </div>
-      <div class="sale-meta">
-        <span>${sale.count.toLocaleString()} سمكة</span>
-        <span>${sale.weight} كجم</span>
-        <span>${fmt(sale.pricePerUnit)}/كجم</span>
-      </div>
-      <div class="payment-progress"><div class="payment-bar" style="width:${p}%"></div></div>
-      <div class="payment-labels">
-        <span class="paid-lbl">مدفوع: ${fmt(paid)}</span>
-        <span class="remaining-lbl">متبقي: ${fmt(remaining)}</span>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function renderSheetInfo() {
-  const el = document.getElementById('sheetSaleInfo');
-  if (!el) return;
-  const sale = state.salesItems.find(s => s.id === state.saleId) || state.salesItems[0];
-  const paid = paidSum(sale.payments);
-  const remaining = sale.total - paid;
-  el.innerHTML = `
-    <div style="background:var(--b050);border-radius:8px;padding:10px 12px;margin-bottom:12px;display:flex;justify-content:space-between;">
-      <div><div style="font-size:.72rem;color:#888">البيعة</div><div style="font-size:.82rem;font-weight:700;color:var(--b900)">${sale.title}</div></div>
-      <div style="text-align:left"><div style="font-size:.72rem;color:#888">المتبقي</div><div style="font-size:.88rem;font-weight:700;color:var(--warning)">${fmt(remaining)}</div></div>
-    </div>`;
-}
-
-function renderCreditors() {
-  const el = document.getElementById('creditorsList');
-  if (!el) return;
-  el.innerHTML = state.creditorItems.map(p => {
-    const paid = paidSum(p.payments);
-    const remaining = p.total - paid;
-    const p2 = pct(paid, p.total);
-    return `
-    <div class="person-item">
-      <div class="person-avatar avatar-creditor">${p.initials}</div>
-      <div class="person-info">
-        <div class="person-name">${p.name}</div>
-        <div class="person-type">${p.type} · ${p.date}</div>
-      </div>
-      <div class="person-amount">
-        <div class="total text-danger">${fmt(p.total)} ج.س</div>
-        <div style="font-size:.68rem;color:var(--success)">مدفوع: ${fmt(paid)}</div>
-        <div class="mini-progress"><div class="mini-bar" style="width:${p2}%;background:var(--success)"></div></div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function renderDebtors() {
-  const el = document.getElementById('debtorsList');
-  if (!el) return;
-  el.innerHTML = state.debtorItems.map(p => {
-    const paid = paidSum(p.payments);
-    const remaining = p.total - paid;
-    const p2 = pct(paid, p.total);
-    return `
-    <div class="person-item">
-      <div class="person-avatar avatar-debtor">${p.initials}</div>
-      <div class="person-info">
-        <div class="person-name">${p.name}</div>
-        <div class="person-type">${p.type} · ${p.date}</div>
-      </div>
-      <div class="person-amount">
-        <div class="total text-warning">${fmt(p.total)} ج.س</div>
-        <div style="font-size:.68rem;color:var(--success)">مدفوع: ${fmt(paid)}</div>
-        <div class="mini-progress"><div class="mini-bar" style="width:${p2}%;background:var(--b400)"></div></div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-// ============================================================
-// NAV PANEL
-// ============================================================
-function updateNavPanel() {
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  const active = document.getElementById('nav-' + state.screen);
-  if (active) active.classList.add('active');
-}
-
-function updateIconControls() {
-  const list = document.getElementById('iconControlsList');
-  if (!list) return;
-  const controls = [];
-  const lake = state.lakes.find(l => l.id === state.lakeId) || state.lakes[0];
-
-  if (state.screen === 'lakes-list') {
-    state.lakes.forEach(l => {
-      const ic = state.icons['lake_' + l.id];
-      controls.push({ id: 'lake_' + l.id, label: l.name, icon: ic });
-    });
-  } else if (state.screen === 'lake-dashboard') {
-    const ic = state.icons['lake_' + lake.id];
-    controls.push({ id: 'lake_' + lake.id, label: lake.name, icon: ic });
-    controls.push({ id: 'sec_expenses', label: 'المصروفات', icon: state.icons.sec_expenses });
-    controls.push({ id: 'sec_sales', label: 'المبيعات', icon: state.icons.sec_sales });
-    controls.push({ id: 'sec_creditor', label: 'الدائنون', icon: state.icons.sec_creditor });
-    controls.push({ id: 'sec_debtor', label: 'المدينون', icon: state.icons.sec_debtor });
-  } else {
-    controls.push({ id: 'lake_1', label: 'أيقونة البحيرة', icon: state.icons.lake_1 });
-    controls.push({ id: 'sec_expenses', label: 'المصروفات', icon: state.icons.sec_expenses });
-    controls.push({ id: 'sec_sales', label: 'المبيعات', icon: state.icons.sec_sales });
-  }
-
-  list.innerHTML = controls.map(c => `
-    <div class="icon-control-row">
-      <span class="icon-control-label">${c.label}</span>
-      <button class="icon-edit-btn" onclick="openIconPicker('${c.id}')">
-        ${c.icon.type === 'emoji' ? `<span>${c.icon.n}</span>` : `<i data-lucide="${c.icon.n}" style="width:12px;height:12px"></i>`}
-        <span>تغيير</span>
-      </button>
-    </div>`).join('');
-  setTimeout(() => lucide.createIcons(), 10);
-}
-
-// ============================================================
-// ICON PICKER
-// ============================================================
-let pickerTargetId = null;
-let pickerTab = 'all';
-let pickerSelected = null;
-
-function openIconPicker(iconId) {
-  pickerTargetId = iconId;
-  pickerSelected = null;
-  pickerTab = 'all';
-  document.getElementById('iconSearch').value = '';
-  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i===0));
-  renderIconGrid();
-  document.getElementById('iconPickerModal').style.display = 'flex';
-  setTimeout(() => lucide.createIcons(), 20);
-}
-
-function closeIconPicker() {
-  document.getElementById('iconPickerModal').style.display = 'none';
-  pickerTargetId = null;
-  pickerSelected = null;
-}
-
-function setIconTab(tab) {
-  pickerTab = tab;
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-  renderIconGrid();
-  setTimeout(() => lucide.createIcons(), 20);
-}
-
-function filterIcons() {
-  renderIconGrid();
-  setTimeout(() => lucide.createIcons(), 20);
-}
-
-function getAllIcons() {
-  const all = [];
-  Object.entries(ICONS).forEach(([cat, icons]) => icons.forEach(ic => all.push({...ic, cat})));
-  return all;
-}
-
-function renderIconGrid() {
-  const grid = document.getElementById('iconGrid');
-  const search = document.getElementById('iconSearch').value.trim().toLowerCase();
-  let icons = pickerTab === 'all' ? getAllIcons() : (ICONS[pickerTab] || []);
-  if (search) icons = icons.filter(ic => ic.ar.includes(search) || ic.n.toLowerCase().includes(search));
-
-  grid.innerHTML = icons.map(ic => {
-    const isSel = pickerSelected && pickerSelected.n === ic.n;
+  // S2 lake icon
+  const s2icon = document.getElementById('s2LakeIcon');
+  if(s2icon){
+    const ic = state.icons[`lake_${state.lakeId}`] || state.icons.lake_1;
     const iconHtml = ic.e
-      ? `<span class="emoji-disp">${ic.n}</span>`
-      : `<i data-lucide="${ic.n}" style="width:24px;height:24px;color:${isSel?'#fff':'var(--b600)'}"></i>`;
-    return `
-    <div class="icon-option ${isSel?'selected':''}" onclick="selectPickerIcon('${ic.n.replace(/'/g,"\\'")}',${ic.e?'true':'false'})">
-      ${iconHtml}
-      <span class="icon-label">${ic.ar}</span>
+      ? `<span style="font-size:1.5em;">${ic.n}</span>`
+      : `<i data-lucide="${ic.n}" style="width:26px;height:26px;"></i>`;
+    s2icon.innerHTML = iconHtml + `<div class="edit-badge"><i data-lucide="pencil"></i></div>`;
+  }
+
+  // S2 section icons
+  const sectionMap = {
+    secExpensesWrap:'sec_expenses',
+    secSalesWrap:'sec_sales',
+    secCreditorWrap:'sec_creditor',
+    secDebtorWrap:'sec_debtor',
+  };
+  Object.entries(sectionMap).forEach(([elId, iconId]) => {
+    const el = document.getElementById(elId);
+    if(!el) return;
+    const ic = state.icons[iconId];
+    const iconHtml = ic.e
+      ? `<span style="font-size:1.1em;">${ic.n}</span>`
+      : `<i data-lucide="${ic.n}" style="width:18px;height:18px;"></i>`;
+    el.innerHTML = iconHtml + `<div class="edit-badge"><i data-lucide="pencil"></i></div>`;
+  });
+
+  // Showcase
+  buildShowcase();
+
+  setTimeout(() => lucide.createIcons(), 10);
+}
+
+/* ==============================
+   NAVIGATION
+   ============================== */
+function navigate(screen, params){
+  state.navStack.push(state.screen);
+  if(params){
+    if(params.lakeId !== undefined) state.lakeId = params.lakeId;
+    if(params.saleId !== undefined) state.saleId = params.saleId;
+  }
+  // Update S2 title & icon when navigating to lake-dashboard
+  if(screen === 'lake-dashboard'){
+    const lake = LAKE_DATA.find(l => l.id === state.lakeId) || LAKE_DATA[0];
+    const t1 = document.getElementById('s2Title');
+    const t2 = document.getElementById('s2LakeName');
+    if(t1) t1.textContent = lake.name;
+    if(t2) t2.textContent = lake.name;
+    const s2icon = document.getElementById('s2LakeIcon');
+    if(s2icon){
+      const ic = state.icons[`lake_${state.lakeId}`] || state.icons.lake_1;
+      const iconHtml = ic.e
+        ? `<span style="font-size:1.5em;">${ic.n}</span>`
+        : `<i data-lucide="${ic.n}" style="width:26px;height:26px;"></i>`;
+      s2icon.innerHTML = iconHtml + `<div class="edit-badge"><i data-lucide="pencil"></i></div>`;
+    }
+  }
+  state.screen = screen;
+  showScreen(screen);
+}
+
+function goBack(){
+  if(state.navStack.length === 0) return;
+  const prev = state.navStack.pop();
+  state.screen = prev;
+  showScreen(prev);
+}
+
+function showScreen(name){
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.remove('active','exit');
+  });
+  const target = document.getElementById(`screen-${name}`);
+  if(target) target.classList.add('active');
+
+  // Update pill
+  const pill = document.getElementById('screenPill');
+  if(pill) pill.textContent = SCREEN_LABELS[name] || name;
+
+  // Update dots
+  const idx = state.navOrder.indexOf(name);
+  document.querySelectorAll('.dot-btn').forEach((d,i) => {
+    d.classList.toggle('active', i === idx);
+  });
+
+  setTimeout(() => lucide.createIcons(), 10);
+}
+
+function prevScreen(){
+  const cur = state.navOrder.indexOf(state.screen);
+  const prev = (cur - 1 + state.navOrder.length) % state.navOrder.length;
+  state.navStack = [];
+  state.screen = state.navOrder[prev];
+  showScreen(state.screen);
+}
+
+function nextScreen(){
+  const cur = state.navOrder.indexOf(state.screen);
+  const next = (cur + 1) % state.navOrder.length;
+  state.navStack = [];
+  state.screen = state.navOrder[next];
+  showScreen(state.screen);
+}
+
+/* ==============================
+   DOTS
+   ============================== */
+function buildDots(){
+  const row = document.getElementById('dotsRow');
+  if(!row) return;
+  row.innerHTML = state.navOrder.map((s,i) =>
+    `<button class="dot-btn${s === state.screen ? ' active' : ''}" onclick="jumpToScreen('${s}')" title="${SCREEN_LABELS[s]}"></button>`
+  ).join('');
+}
+
+function jumpToScreen(name){
+  state.navStack = [];
+  state.screen = name;
+  showScreen(name);
+}
+
+/* ==============================
+   SHOWCASE TOGGLE
+   ============================== */
+function toggleShowcase(){
+  const sec = document.getElementById('showcaseSection');
+  const btn = document.getElementById('showcaseBtn');
+  const isOpen = sec.classList.contains('open');
+  sec.classList.toggle('open', !isOpen);
+  btn.innerHTML = isOpen
+    ? `<i data-lucide="layout-grid"></i> عرض الشاشات`
+    : `<i data-lucide="x"></i> إخفاء الشاشات`;
+  setTimeout(() => lucide.createIcons(), 10);
+}
+
+/* ==============================
+   SHOWCASE MINI PHONES
+   ============================== */
+const SHOWCASE_META = [
+  {key:'lakes-list',    label:'قائمة البحيرات',  color:'#0f3d5a', hdr:'#1a6b8a', cards:3},
+  {key:'lake-dashboard',label:'لوحة البحيرة',    color:'#0d2f45', hdr:'#135070', cards:'grid'},
+  {key:'expenses',      label:'المصروفات',       color:'#b83030', hdr:'#0f3d5a', cards:5},
+  {key:'add-expense',   label:'إضافة مصروف',     color:'#0f3d5a', hdr:'#135070', cards:'form'},
+  {key:'sales',         label:'المبيعات',        color:'#1e8a5e', hdr:'#0f3d5a', cards:3},
+  {key:'add-payment',   label:'إضافة دفعة',      color:'#0f3d5a', hdr:'transparent', cards:'sheet'},
+  {key:'creditors',     label:'الدائنون',        color:'#b86a00', hdr:'#0f3d5a', cards:2},
+  {key:'debtors',       label:'المدينون',        color:'#1a6b8a', hdr:'#0f3d5a', cards:2},
+  {key:'add-sale',      label:'إضافة بيعة',      color:'#0f3d5a', hdr:'#135070', cards:'form'},
+];
+
+function buildMiniBody(meta){
+  if(meta.cards === 'grid'){
+    return `<div class="mini-body">
+      <div class="mini-grid">
+        <div class="mini-grid-card" style="background:#d94040;"></div>
+        <div class="mini-grid-card" style="background:#1e8a5e;"></div>
+        <div class="mini-grid-card" style="background:#b86a00;"></div>
+        <div class="mini-grid-card" style="background:#1a6b8a;"></div>
+      </div>
+      <div class="mini-card" style="height:18px;margin:4px 4px 0;"></div>
     </div>`;
-  }).join('');
+  }
+  if(meta.cards === 'form'){
+    return `<div class="mini-body" style="padding:6px 5px;">
+      <div style="background:#e8f2f8;border-radius:4px;height:12px;margin-bottom:5px;"></div>
+      <div style="background:#e8f2f8;border-radius:4px;height:12px;margin-bottom:5px;"></div>
+      <div style="background:#e8f2f8;border-radius:4px;height:12px;margin-bottom:8px;"></div>
+      <div style="background:${meta.hdr};border-radius:6px;height:22px;margin-bottom:4px;opacity:.8;"></div>
+    </div>`;
+  }
+  if(meta.cards === 'sheet'){
+    return `<div class="mini-body" style="display:flex;align-items:flex-end;padding:4px;">
+      <div style="background:#fff;border-radius:8px 8px 0 0;width:100%;padding:6px 5px;">
+        <div style="background:#e0e8ed;border-radius:2px;height:3px;width:28px;margin:0 auto 6px;"></div>
+        <div style="background:#eef3f6;border-radius:3px;height:8px;margin-bottom:4px;"></div>
+        <div style="background:#eef3f6;border-radius:3px;height:8px;margin-bottom:4px;"></div>
+        <div style="background:${meta.hdr || '#1a6b8a'};border-radius:5px;height:16px;opacity:.9;"></div>
+      </div>
+    </div>`;
+  }
+  // list cards
+  const n = typeof meta.cards === 'number' ? meta.cards : 3;
+  const items = Array.from({length:n}, () =>
+    `<div class="mini-card" style="height:${Math.floor(220/n - 6)}px;display:flex;align-items:center;gap:3px;padding:0 5px;">
+      <div style="width:14px;height:14px;border-radius:4px;background:#dbeaf5;flex-shrink:0;"></div>
+      <div style="flex:1;">
+        <div style="background:#dbeaf5;border-radius:2px;height:5px;margin-bottom:3px;"></div>
+        <div style="background:#eef3f6;border-radius:2px;height:4px;width:60%;"></div>
+      </div>
+    </div>`
+  ).join('');
+  return `<div class="mini-body">${items}</div>`;
 }
 
-function selectPickerIcon(n, isEmoji) {
-  pickerSelected = { n, type: isEmoji ? 'emoji' : 'lucide' };
-  renderIconGrid();
+function buildShowcase(){
+  const grid = document.getElementById('showcaseGrid');
+  if(!grid) return;
+  grid.innerHTML = SHOWCASE_META.map(meta => `
+    <div class="mini-phone-wrap" onclick="jumpToScreen('${meta.key}')">
+      <div class="mini-phone">
+        <div class="mini-phone-inner" style="background:#f0fafd;">
+          <div class="mini-status" style="background:${meta.color};"></div>
+          <div class="mini-header" style="background:${meta.hdr};height:34px;"></div>
+          ${buildMiniBody(meta)}
+        </div>
+      </div>
+      <div class="mini-label">${meta.label}</div>
+    </div>
+  `).join('');
+}
+
+/* ==============================
+   ICON PICKER
+   ============================== */
+let pickerTarget = null;
+let pickerSelected = null;
+let pickerTab = 'all';
+
+function openPicker(iconId){
+  pickerTarget = iconId;
+  pickerSelected = null;
+  switchTab('all');
+  // reset tab buttons
+  document.querySelectorAll('.picker-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === 'all'));
+  document.getElementById('pickerOverlay').classList.add('open');
+}
+
+function closePicker(){
+  document.getElementById('pickerOverlay').classList.remove('open');
+  pickerTarget = null;
+  pickerSelected = null;
+}
+
+function handleOverlayClick(e){
+  if(e.target === document.getElementById('pickerOverlay')) closePicker();
+}
+
+function switchTab(tab){
+  pickerTab = tab;
+  pickerSelected = null;
+  document.querySelectorAll('.picker-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  const icons = tab === 'all' ? ALL_ICONS : (ICONS[tab] || []);
+  const grid = document.getElementById('pickerGrid');
+  grid.innerHTML = icons.map(ic => `
+    <button class="picker-icon-btn" data-icon="${ic.n}" onclick="selectPickerIcon('${ic.n.replace(/'/g,"\\'")}',${!!ic.e})" title="${ic.ar}">
+      <div class="picker-icon-box">
+        ${ic.e ? `<span style="font-size:1.4em;">${ic.n}</span>` : `<i data-lucide="${ic.n}"></i>`}
+      </div>
+      <span class="picker-icon-lbl">${ic.ar}</span>
+    </button>
+  `).join('');
   setTimeout(() => lucide.createIcons(), 10);
 }
 
-function confirmIconPick() {
-  if (!pickerSelected || !pickerTargetId) { closeIconPicker(); return; }
-  state.icons[pickerTargetId] = pickerSelected;
-  closeIconPicker();
-  renderScreenContent(state.screen);
-  setTimeout(() => lucide.createIcons(), 10);
-  updateIconControls();
-  renderShowcase();
+function selectPickerIcon(name, isEmoji){
+  pickerSelected = {n: name, e: isEmoji};
+  document.querySelectorAll('.picker-icon-btn').forEach(btn => {
+    btn.classList.toggle('selected', btn.getAttribute('data-icon') === name);
+  });
+}
+
+function confirmPick(){
+  if(!pickerTarget || !pickerSelected) { closePicker(); return; }
+  state.icons[pickerTarget] = {n: pickerSelected.n, e: pickerSelected.e};
+  renderAllDynamic();
+  closePicker();
   showToast('تم تغيير الأيقونة ✓');
 }
 
-// ============================================================
-// TOAST
-// ============================================================
-function showToast(msg) {
-  const container = document.getElementById('toastContainer');
-  const t = document.createElement('div');
-  t.className = 'toast';
+/* ==============================
+   TOAST
+   ============================== */
+let toastTimer = null;
+function showToast(msg){
+  const t = document.getElementById('toast');
   t.textContent = msg;
-  container.appendChild(t);
-  setTimeout(() => t.classList.add('show'), 10);
-  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 2500);
+  t.classList.add('show');
+  if(toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-// ============================================================
-// SHOWCASE GRID
-// ============================================================
-const SCREENS_META = [
-  { id: 'lakes-list', label: 'قائمة البحيرات', render: renderMiniLakesList },
-  { id: 'lake-dashboard', label: 'لوحة البحيرة', render: renderMiniDashboard },
-  { id: 'expenses', label: 'المصروفات', render: renderMiniExpenses },
-  { id: 'add-expense', label: 'إضافة مصروف', render: renderMiniForm },
-  { id: 'sales', label: 'المبيعات', render: renderMiniSales },
-  { id: 'add-payment', label: 'إضافة دفعة', render: renderMiniPayment },
-  { id: 'creditors', label: 'الدائنون', render: renderMiniCreditors },
-  { id: 'debtors', label: 'المدينون', render: renderMiniDebtors },
-  { id: 'add-sale', label: 'إضافة بيعة', render: renderMiniAddSale },
-];
-
-function miniIcon(iconId) {
-  const ic = state.icons[iconId];
-  if (!ic) return '<div style="width:9px;height:9px;background:rgba(255,255,255,.5);border-radius:2px"></div>';
-  if (ic.type === 'emoji') return `<span style="font-size:8px">${ic.n}</span>`;
-  return `<i data-lucide="${ic.n}" style="width:9px;height:9px;color:#fff"></i>`;
-}
-
-function renderMiniLakesList() {
-  return `
-  <div class="ms-bar"></div>
-  <div class="ms-header ms-h-bg1" style="gap:4px">
-    <i data-lucide="fish" style="width:7px;height:7px;color:var(--b200)"></i>
-    <span class="ms-title">محاسيب البحيرات</span>
-  </div>
-  <div class="ms-body">
-    <div class="ms-hero">
-      <div class="ms-hero-t">مرحباً 👋</div>
-      <div class="ms-hero-stats"><span class="ms-hero-s">3 بحيرات</span><span class="ms-hero-s">54.8M مبيعات</span></div>
-    </div>
-    ${state.lakes.map(l=>`
-    <div class="ms-card" style="cursor:pointer" onclick="navigate('lake-dashboard',{lakeId:${l.id}})">
-      <div class="ms-row">
-        <div class="ms-icon" style="display:flex;align-items:center;justify-content:center">${miniIcon('lake_'+l.id)}</div>
-        <div class="ms-line"></div>
-      </div>
-      <div class="ms-line-s" style="margin-top:1px"></div>
-    </div>`).join('')}
-  </div>`;
-}
-
-function renderMiniDashboard() {
-  const lake = state.lakes[0];
-  return `
-  <div class="ms-bar"></div>
-  <div class="ms-header ms-h-bg1">
-    <div class="ms-dot"></div>
-    <span class="ms-title">${lake.name}</span>
-  </div>
-  <div style="background:linear-gradient(135deg,var(--b800),var(--b600));padding:5px 6px;display:grid;grid-template-columns:1fr 1fr;gap:3px">
-    ${['مصروفات','مبيعات','دائنون','مدينون'].map(t=>`
-    <div style="background:rgba(255,255,255,.1);border-radius:3px;padding:3px 4px">
-      <div style="font-size:3.5px;color:rgba(255,255,255,.7);font-family:Tajawal">${t}</div>
-      <div style="font-size:4px;color:#fff;font-weight:700;font-family:Tajawal">--M ج.س</div>
-    </div>`).join('')}
-  </div>
-  <div class="ms-grid">
-    ${[
-      {cls:'exp',label:'المصروفات',key:'sec_expenses'},
-      {cls:'sale',label:'المبيعات',key:'sec_sales'},
-      {cls:'cred',label:'الدائنون',key:'sec_creditor'},
-      {cls:'deb',label:'المدينون',key:'sec_debtor'}
-    ].map(s=>`
-    <div class="ms-sect">
-      <div class="ms-sect-icon ${s.cls}" style="display:flex;align-items:center;justify-content:center">${miniIconSmall(s.key)}</div>
-      <div class="ms-sect-t">${s.label}</div>
-    </div>`).join('')}
-  </div>`;
-}
-
-function miniIconSmall(iconId) {
-  const ic = state.icons[iconId];
-  if (!ic) return '';
-  if (ic.type === 'emoji') return `<span style="font-size:7px">${ic.n}</span>`;
-  const colors = {sec_expenses:'var(--danger)',sec_sales:'var(--success)',sec_creditor:'#1a5fa8',sec_debtor:'var(--warning)'};
-  return `<i data-lucide="${ic.n}" style="width:7px;height:7px;color:${colors[iconId]||'var(--b600)'}"></i>`;
-}
-
-function renderMiniExpenses() {
-  return `
-  <div class="ms-bar"></div>
-  <div class="ms-header ms-h-bg1"><div class="ms-dot"></div><span class="ms-title">المصروفات</span></div>
-  <div style="background:linear-gradient(135deg,var(--b700),var(--b500));padding:4px 6px;display:flex;justify-content:space-between">
-    <span style="font-size:4px;color:#fff;font-family:Tajawal">12.5M ج.س</span>
-    <span style="font-size:4px;color:rgba(255,255,255,.7);font-family:Tajawal">5 بنود</span>
-  </div>
-  <div class="ms-body">
-    ${state.expenseItems.map(e=>`
-    <div class="ms-card"><div class="ms-row">
-      <div class="ms-icon"></div>
-      <div class="ms-line"></div>
-      <div class="ms-line-r" style="width:25%;margin-right:2px"></div>
-    </div></div>`).join('')}
-  </div>`;
-}
-
-function renderMiniForm() {
-  return `
-  <div class="ms-bar"></div>
-  <div class="ms-header ms-h-bg1"><div class="ms-dot"></div><span class="ms-title">إضافة مصروف</span></div>
-  <div class="ms-body">
-    ${[1,2,3,4,5].map(()=>`<div class="ms-form-field"></div>`).join('')}
-    <div class="ms-btn"></div>
-  </div>`;
-}
-
-function renderMiniSales() {
-  return `
-  <div class="ms-bar"></div>
-  <div class="ms-header ms-h-bg1"><div class="ms-dot"></div><span class="ms-title">المبيعات</span></div>
-  <div style="background:linear-gradient(135deg,var(--b700),var(--b500));padding:4px 6px;display:flex;justify-content:space-between">
-    <span style="font-size:4px;color:#fff;font-family:Tajawal">28.4M ج.س</span>
-    <span style="font-size:4px;color:rgba(255,255,255,.7);font-family:Tajawal">3 دفعات</span>
-  </div>
-  <div class="ms-body">
-    ${state.salesItems.map(s=>{
-      const paid = paidSum(s.payments);
-      const p = pct(paid, s.total);
-      return `<div class="ms-card">
-        <div class="ms-row"><div class="ms-line"></div><div class="ms-line-g" style="width:30%"></div></div>
-        <div class="ms-prog"><div class="ms-prog-bar" style="width:${p}%"></div></div>
-      </div>`;
-    }).join('')}
-  </div>`;
-}
-
-function renderMiniPayment() {
-  return `
-  <div class="ms-bar"></div>
-  <div class="ms-header ms-h-bg1"><div class="ms-dot"></div><span class="ms-title">المبيعات</span></div>
-  <div style="background:linear-gradient(135deg,var(--b700),var(--b500));padding:4px 6px">
-    <span style="font-size:4px;color:#fff;font-family:Tajawal">28.4M ج.س</span>
-  </div>
-  <div class="ms-body" style="padding:4px 5px;opacity:.4">
-    <div class="ms-card"><div class="ms-row"><div class="ms-line"></div></div></div>
-  </div>
-  <div class="ms-sheet">
-    <div class="ms-sheet-t">إضافة دفعة</div>
-    <div class="ms-form-field"></div>
-    <div class="ms-form-field"></div>
-    <div class="ms-btn" style="height:9px;margin-top:3px"></div>
-  </div>`;
-}
-
-function renderMiniCreditors() {
-  return `
-  <div class="ms-bar"></div>
-  <div class="ms-header ms-h-bg1"><div class="ms-dot"></div><span class="ms-title">الدائنون</span></div>
-  <div style="background:linear-gradient(135deg,#1a3a8a,#2155c8);padding:4px 6px">
-    <span style="font-size:4px;color:#fff;font-family:Tajawal">4.2M ج.س</span>
-  </div>
-  <div class="ms-body">
-    ${state.creditorItems.map(p=>`
-    <div class="ms-card"><div class="ms-row">
-      <div style="width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,#e4f0ff,#b8d8ff);flex-shrink:0"></div>
-      <div class="ms-line"></div>
-      <div class="ms-line-r" style="width:20%"></div>
-    </div></div>`).join('')}
-  </div>`;
-}
-
-function renderMiniDebtors() {
-  return `
-  <div class="ms-bar"></div>
-  <div class="ms-header ms-h-bg1"><div class="ms-dot"></div><span class="ms-title">المدينون</span></div>
-  <div style="background:linear-gradient(135deg,#7a4200,#b86a00);padding:4px 6px">
-    <span style="font-size:4px;color:#fff;font-family:Tajawal">3.1M ج.س</span>
-  </div>
-  <div class="ms-body">
-    ${state.debtorItems.map(p=>`
-    <div class="ms-card"><div class="ms-row">
-      <div style="width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,#fff0e4,#ffd8b0);flex-shrink:0"></div>
-      <div class="ms-line"></div>
-      <div class="ms-line-g" style="width:20%"></div>
-    </div></div>`).join('')}
-  </div>`;
-}
-
-function renderMiniAddSale() {
-  return `
-  <div class="ms-bar"></div>
-  <div class="ms-header ms-h-bg1"><div class="ms-dot"></div><span class="ms-title">إضافة بيعة</span></div>
-  <div class="ms-body">
-    ${[1,2,3,4,5,6].map(()=>`<div class="ms-form-field"></div>`).join('')}
-    <div class="ms-btn"></div>
-  </div>`;
-}
-
-function renderShowcase() {
-  const grid = document.getElementById('showcaseGrid');
-  if (!grid) return;
-  grid.innerHTML = SCREENS_META.map(s => `
-    <div class="mini-phone-wrap">
-      <div class="mini-phone" onclick="navigate('${s.id}',{lakeId:1,saleId:1})" title="${s.label}">
-        <div class="mini-screen">${s.render()}</div>
-      </div>
-      <div class="mini-phone-label">${s.label}</div>
-    </div>`).join('');
-  setTimeout(() => lucide.createIcons(), 20);
-}
-
-// ============================================================
-// INIT
-// ============================================================
-function init() {
-  renderLakesList();
-  renderDashboard();
-  renderExpenses();
-  renderSales(false);
-  renderSales(true);
-  renderSheetInfo();
-  renderCreditors();
-  renderDebtors();
-  updateNavPanel();
-  updateIconControls();
-  renderShowcase();
+/* ==============================
+   INIT
+   ============================== */
+document.addEventListener('DOMContentLoaded', () => {
+  buildDots();
+  renderAllDynamic();
+  showScreen('lakes-list');
   setTimeout(() => lucide.createIcons(), 50);
-}
-
-document.addEventListener('DOMContentLoaded', init);
+});
 </script>
 </body>
 </html>
